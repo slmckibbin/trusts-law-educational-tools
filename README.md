@@ -12,7 +12,7 @@ This repository contains six interactive educational tools designed for law stud
 
 ## 🚀 Live Demo
 
-**[View Live Tools](https://your-deployment-url.com)** *(Update this with your actual deployment URL)*
+**[View Live Tools](https://slmckibbin.github.io/trusts-law-educational-tools)**
 
 ## 📚 Educational Tools
 
