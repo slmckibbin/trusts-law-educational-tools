@@ -1,7 +1,7 @@
 {
-  "name": "trusts-law-educational-tools",
+  "name": "trust-law-educational-tools",
   "version": "1.0.0",
-  "description": "Interactive educational tools for Australian trusts law",
+  "description": "Interactive educational tools for Australian trust law",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
