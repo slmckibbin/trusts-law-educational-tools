@@ -1,4 +1,4 @@
-# Trust Law Educational Tools
+# Trusts Law Educational Tools
 
 Interactive learning resources for Australian trusts law, featuring comprehensive coverage of Queensland's *Trusts Act 2025* modernisation.
 
