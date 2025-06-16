@@ -1,8 +1,26 @@
 import React, { useState } from 'react';
-import { BookOpen, Scale, Play, Brain, Search, AlertTriangle } from 'lucide-react';
-import InteractiveDutyChecker from './components/InteractiveDutyChecker';
-import JurisdictionComparisonTool from './components/JurisdictionComparisonTool';
-import './App.css';
+import { BookOpen, Scale } from 'lucide-react';
+
+// Simple placeholder components for now
+const InteractiveDutyChecker = () => (
+  <div className="p-6 bg-white rounded-lg">
+    <h2 className="text-2xl font-bold mb-4">Interactive Duty Checker</h2>
+    <p>This tool analyzes trustee duties and potential breaches.</p>
+    <div className="mt-4 p-4 bg-blue-50 rounded">
+      <p>🚧 Tool is loading... This confirms your React app is working!</p>
+    </div>
+  </div>
+);
+
+const JurisdictionComparisonTool = () => (
+  <div className="p-6 bg-white rounded-lg">
+    <h2 className="text-2xl font-bold mb-4">Jurisdiction Comparison Tool</h2>
+    <p>Compare trust law across Australian jurisdictions.</p>
+    <div className="mt-4 p-4 bg-green-50 rounded">
+      <p>🚧 Tool is loading... This confirms your React app is working!</p>
+    </div>
+  </div>
+);
 
 function App() {
   const [currentTool, setCurrentTool] = useState('home');
@@ -40,7 +58,7 @@ function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tools.map((tool) => (
               <div
                 key={tool.id}
@@ -65,26 +83,9 @@ function App() {
 
           <div className="mt-12 bg-blue-50 rounded-lg p-6">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">About These Tools</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-blue-700">
-              <div>
-                <h3 className="font-semibold mb-2">Queensland Law Modernisation</h3>
-                <ul className="space-y-1">
-                  <li>• Compare Queensland <em>Trusts Act 2025</em> vs <em>Trusts Act 1973</em></li>
-                  <li>• Understand non-excludable statutory duties</li>
-                  <li>• Learn about enhanced delegation powers</li>
-                  <li>• Explore "all powers of absolute owner" framework</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Interactive Learning</h3>
-                <ul className="space-y-1">
-                  <li>• Scenario-based decision making</li>
-                  <li>• Adaptive difficulty assessment</li>
-                  <li>• Cross-jurisdictional comparisons</li>
-                  <li>• Real-world case study simulations</li>
-                </ul>
-              </div>
-            </div>
+            <p className="text-blue-700">
+              🎯 <strong>Status:</strong> Basic React app is working! We can now add the full interactive components.
+            </p>
           </div>
         </div>
       </div>
