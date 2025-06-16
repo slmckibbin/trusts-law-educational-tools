@@ -2,10 +2,6 @@ import React, { useState } from 'react';
 import { BookOpen, Scale, Play, Brain, Search, AlertTriangle } from 'lucide-react';
 import InteractiveDutyChecker from './components/InteractiveDutyChecker';
 import JurisdictionComparisonTool from './components/JurisdictionComparisonTool';
-import CaseStudySimulator from './components/CaseStudySimulator';
-import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz';
-import PowerAuthorisationChecker from './components/PowerAuthorisationChecker';
-import BreachTrustAnalyser from './components/BreachTrustAnalyser';
 import './App.css';
 
 function App() {
@@ -25,34 +21,6 @@ function App() {
       description: 'Compare trustee powers and duties across Australian states and territories',
       icon: <BookOpen className="w-8 h-8" />,
       component: <JurisdictionComparisonTool />
-    },
-    {
-      id: 'case-study',
-      title: 'Case Study Simulator',
-      description: 'Experience realistic trustee scenarios and see consequences of decisions',
-      icon: <Play className="w-8 h-8" />,
-      component: <CaseStudySimulator />
-    },
-    {
-      id: 'assessment-quiz',
-      title: 'Adaptive Assessment Quiz',
-      description: 'Self-assessment quiz that adapts difficulty based on performance',
-      icon: <Brain className="w-8 h-8" />,
-      component: <AdaptiveAssessmentQuiz />
-    },
-    {
-      id: 'power-checker',
-      title: 'Power Authorisation Checker',
-      description: 'Determine if trustees have authority for specific actions',
-      icon: <Search className="w-8 h-8" />,
-      component: <PowerAuthorisationChecker />
-    },
-    {
-      id: 'breach-analyser',
-      title: 'Breach of Trust Analyser',
-      description: 'Identify and analyse potential trustee breaches',
-      icon: <AlertTriangle className="w-8 h-8" />,
-      component: <BreachTrustAnalyser />
     }
   ];
 
