@@ -1,7 +1,7 @@
 {
   "name": "trusts-law-educational-tools",
   "version": "1.0.0",
-  "private": true, // Often present in CRA projects
+  "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
