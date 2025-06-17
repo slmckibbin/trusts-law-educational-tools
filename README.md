@@ -70,8 +70,8 @@ These tools extensively cover the revolutionary changes in Queensland's *Trusts 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/trust-law-educational-tools.git
-cd trust-law-educational-tools
+git clone https://github.com/yourusername/trusts-law-educational-tools.git
+cd trusts-law-educational-tools
 
 # Install dependencies
 npm install
