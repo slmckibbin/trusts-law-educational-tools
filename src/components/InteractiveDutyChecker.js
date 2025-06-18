@@ -20,7 +20,7 @@ const InteractiveDutyChecker = () => {
     traditional_duties: [
       { name: 'Follow trust terms', source: 'General law and statute', description: 'Carry out settlor's wishes as expressed in trust deed.' },
       { name: 'Act impartially among beneficiaries', source: 'General law', description: 'Fair treatment (meaningless for discretionary trusts).' },
-      { name: 'Not delegate inappropriately', source: 'General law and Qld (2025) ss 72–73', description: 'Enhanced delegation powers under Trusts Act 2025 (Qld).' },
+      { name: 'Not delegate inappropriately', source: 'General law and Qld (2025) ss 72–73', description: 'Enhanced delegation powers under *Trusts Act 2025* (Qld).' },
       { name: 'Invest prudently', source: 'General law and statute', description: 'Prudent person standard with modern flexibility.' },
       { name: 'Not profit from position', source: 'General law', description: 'Avoid conflicts of interest and personal benefit.' },
       { name: 'Get in trust property', source: 'General law', description: 'Obtain legal title to trust assets.' }
@@ -30,37 +30,37 @@ const InteractiveDutyChecker = () => {
   const scenarios = [
     {
       id: 'risky_investment',
-      title: 'Risky investment decision',
+      title: 'Risky Investment Decision',
       description: 'Professional trustee invested 80% of trust assets in cryptocurrency without consulting beneficiaries.',
       triggers: ['investment', 'prudence', 'care']
     },
     {
       id: 'self_dealing',
-      title: 'Self-dealing transaction',
+      title: 'Self-Dealing Transaction',
       description: 'Corporate trustee purchased trust property for its parent company at below market value.',
       triggers: ['conflict', 'honesty', 'profit']
     },
     {
       id: 'information_refusal',
-      title: 'Refusing information request',
+      title: 'Refusing Information Request',
       description: 'Trustee refused to provide trust accounts to a discretionary beneficiary, citing confidentiality.',
       triggers: ['information', 'records']
     },
     {
       id: 'excessive_fees',
-      title: 'Excessive professional fees',
-      description: 'Professional trustee charged $50,000 annual fee for simple family trust with $200,000 assets.',
+      title: 'Excessive Professional Fees',
+      description: 'Professional trustee charged a $50,000 annual fee for a simple family trust with $200,000 assets.',
       triggers: ['profit', 'care', 'honesty']
     },
     {
       id: 'delegation_failure',
-      title: 'Improper delegation',
+      title: 'Improper Delegation',
       description: 'Trustee delegated all investment decisions to an unqualified family member indefinitely without oversight.',
       triggers: ['delegation', 'care', 'prudence']
     }
   ];
 
-  const analyzeScenario = () => {
+  const analyseScenario = () => {
     if (!scenario || !trusteeType || !jurisdiction || !trustType) return;
 
     const selectedScenario = scenarios.find(s => s.id === scenario);
@@ -73,7 +73,7 @@ const InteractiveDutyChecker = () => {
     if (selectedScenario.triggers.includes('investment') || selectedScenario.triggers.includes('prudence')) {
       applicableDuties.push('Duty to invest prudently.');
       if (jurisdiction === 'qld2025') {
-        applicableDuties.push('Enhanced duty of care (ss 65–67).');
+        applicableDuties.push('Enhanced duty of care (Sections 65–67).');
         if (trusteeType === 'professional') {
           breaches.push('Professional trustee standard – must exercise care equivalent to a prudent person in the trustee profession.');
         }
@@ -107,7 +107,7 @@ const InteractiveDutyChecker = () => {
     if (selectedScenario.triggers.includes('delegation')) {
       applicableDuties.push('Duty not to delegate inappropriately.');
       if (jurisdiction === 'qld2025') {
-        protections.push('Enhanced delegation powers (ss 72–73), but must supervise delegates.');
+        protections.push('Enhanced delegation powers (Sections 72–73), but must supervise delegates.');
         breaches.push('Improper delegation without adequate oversight or qualification assessment.');
       } else {
         breaches.push('General law prohibition on delegating discretionary powers.');
@@ -118,12 +118,12 @@ const InteractiveDutyChecker = () => {
     if (trusteeType === 'professional') {
       applicableDuties.push('Enhanced professional standard of care.');
       if (jurisdiction === 'qld2025') {
-        breaches.push('Failed to meet professional trustee standard under s 65.');
+        breaches.push('Failed to meet professional trustee standard under Section 65.');
       }
     } else if (trusteeType === 'individual') {
       applicableDuties.push('Ordinary prudent person standard.');
       if (jurisdiction === 'qld2025') {
-        applicableDuties.push('Basic duty of care (s 67).');
+        applicableDuties.push('Basic duty of care (Section 67).');
       }
     }
 
@@ -134,7 +134,7 @@ const InteractiveDutyChecker = () => {
 
     if (jurisdiction === 'qld2025') {
       recommendations.push('Review compliance with non-excludable statutory duties.');
-      protections.push('Court discretion to relieve liability (s 160).');
+      protections.push('Court discretion to relieve liability (Section 160).');
     }
 
     setAnalysis({
@@ -295,7 +295,7 @@ const InteractiveDutyChecker = () => {
 
           <div className="text-center">
             <button
-              onClick={analyzeScenario}
+              onClick={analyseScenario}
               disabled={!scenario || !trusteeType || !jurisdiction || !trustType}
               className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
