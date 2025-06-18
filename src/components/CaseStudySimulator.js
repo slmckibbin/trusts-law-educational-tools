@@ -1,3 +1,4 @@
+// src/Components/CaseStudySimulator.js
 import { useState } from 'react';
 import { Play, RotateCcw, User, DollarSign, FileText, AlertTriangle, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 
@@ -35,7 +36,7 @@ const CaseStudySimulator = () => {
               impact: { score: -2, consequences: "Poor decision - funding gambling without considering trust purposes or other beneficiaries", legal: "Potential breach of duty to act in best interests" }
             },
             {
-              id: 'b', 
+              id: 'b',
               text: "Refuse the distribution and cite discretionary nature of trust",
               impact: { score: 1, consequences: "Correct recognition of discretionary powers but may need better communication", legal: "Appropriate exercise of discretion" }
             },
@@ -137,7 +138,7 @@ const CaseStudySimulator = () => {
     commercial_trust: {
       title: "Commercial Unit Trust Dilemma",
       description: "You manage a commercial property unit trust. Major repairs are needed but will significantly impact distributions.",
-      jurisdiction: "qld2025", 
+      jurisdiction: "qld2025",
       trusteeType: "corporate",
       scenario: {
         background: "You are the corporate trustee of Riverside Commercial Trust, which owns a $10M office building. The building needs $800,000 in structural repairs. There are 20 unit holders expecting quarterly distributions.",
@@ -273,17 +274,17 @@ const CaseStudySimulator = () => {
     const currentCaseData = caseStudies[currentCase];
     const currentStepData = currentCaseData.steps[currentStep];
     const selectedOption = currentStepData.options.find(opt => opt.id === optionId);
-    
+
     const newDecision = {
       step: currentStep + 1,
       question: currentStepData.question,
       choice: selectedOption.text,
       impact: selectedOption.impact
     };
-    
+
     setDecisions([...decisions, newDecision]);
     setScore(score + selectedOption.impact.score);
-    
+
     if (currentStep < currentCaseData.steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -329,7 +330,7 @@ const CaseStudySimulator = () => {
             <div key={key} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
               <p className="text-gray-600 mb-4">{caseStudy.description}</p>
-              
+
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-sm">
                   <FileText className="w-4 h-4 mr-2 text-blue-600" />
@@ -407,24 +408,24 @@ const CaseStudySimulator = () => {
                   decision.impact.score >= 0 ? 'bg-yellow-100 text-yellow-800' :
                   'bg-red-100 text-red-800'
                 }`}>
-                  {decision.impact.score >= 0 ? 
-                    <CheckCircle className="w-4 h-4 mr-1" /> : 
+                  {decision.impact.score >= 0 ?
+                    <CheckCircle className="w-4 h-4 mr-1" /> :
                     <XCircle className="w-4 h-4 mr-1" />
                   }
                   Score: {decision.impact.score > 0 ? '+' : ''}{decision.impact.score}
                 </div>
               </div>
-              
+
               <div className="mb-3">
                 <div className="text-sm text-gray-600 mb-1">Question:</div>
                 <div className="text-sm">{decision.question}</div>
               </div>
-              
+
               <div className="mb-3">
                 <div className="text-sm text-gray-600 mb-1">Your Choice:</div>
                 <div className="text-sm font-medium">{decision.choice}</div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <div className="text-sm text-gray-600 mb-1">Consequences:</div>
@@ -500,7 +501,7 @@ const CaseStudySimulator = () => {
             Reset
           </button>
         </div>
-        
+
         <div className="flex items-center space-x-4 text-sm mb-4">
           <span className="bg-blue-100 px-3 py-1 rounded-full">
             Step {currentStep + 1} of {currentCaseData.steps.length}
@@ -514,7 +515,7 @@ const CaseStudySimulator = () => {
         </div>
 
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
+          <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${((currentStep + 1) / currentCaseData.steps.length) * 100}%` }}
           ></div>
@@ -525,7 +526,7 @@ const CaseStudySimulator = () => {
         <div className="mb-6 bg-gray-50 p-6 rounded-lg">
           <h3 className="text-lg font-semibold mb-3">Background</h3>
           <p className="text-gray-700 mb-4">{currentCaseData.scenario.background}</p>
-          
+
           <h4 className="font-medium mb-3">Key Players:</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {currentCaseData.scenario.characters.map((character, index) => (
@@ -542,12 +543,12 @@ const CaseStudySimulator = () => {
       <div className="bg-white border rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Current Situation</h3>
         <p className="text-gray-700 mb-6">{currentStepData.situation}</p>
-        
+
         <h4 className="font-medium mb-4 flex items-center">
           <AlertTriangle className="w-5 h-5 mr-2 text-orange-600" />
           {currentStepData.question}
         </h4>
-        
+
         <div className="space-y-3">
           {currentStepData.options.map((option) => (
             <button
