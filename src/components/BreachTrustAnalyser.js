@@ -1,4 +1,5 @@
-import { useState } from 'react';
+// src/Components/BreachTrustAnalyser.js
+import { useState, useEffect } from 'react';
 import { AlertTriangle, Shield, Scale, Target, CheckCircle, XCircle, Info, Gavel } from 'lucide-react';
 
 const BreachTrustAnalyser = () => {
@@ -138,7 +139,7 @@ const BreachTrustAnalyser = () => {
         consequences.push('Potential breach of non-excludable statutory duties');
         defences.push('Section 160 court relief if acted honestly and reasonably');
       }
-      
+
       if (trusteeType === 'professional') {
         consequences.push('Higher professional standard applies (Section 65)');
         severity = severity === 'low' ? 'medium' : severity === 'medium' ? 'high' : severity;
@@ -237,8 +238,8 @@ const BreachTrustAnalyser = () => {
           {/* Breach Type Selection */}
           <div>
             <label className="block text-sm font-medium mb-2">Type of potential breach:</label>
-            <select 
-              value={selectedBreach} 
+            <select
+              value={selectedBreach}
               onChange={(e) => setSelectedBreach(e.target.value)}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
             >
@@ -276,7 +277,7 @@ const BreachTrustAnalyser = () => {
                   jurisdiction === 'qld2025' ? 'border-green-500 bg-green-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 2025</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   Non-excludable duties + enhanced protections
                 </div>
@@ -287,7 +288,7 @@ const BreachTrustAnalyser = () => {
                   jurisdiction === 'qld1973' ? 'border-orange-500 bg-orange-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 1973</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   Traditional equitable principles
                 </div>
@@ -356,7 +357,7 @@ const BreachTrustAnalyser = () => {
                 {analysis.severity.charAt(0).toUpperCase() + analysis.severity.slice(1)} severity
               </span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">
-                {jurisdiction === 'qld2025' ? <>Queensland <em>Trusts Act 2025</em></> : <>Queensland <em>Trusts Act 1973</em></>}
+                {jurisdiction === 'qld2025' ? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></>}
               </span>
             </div>
           </div>
@@ -494,7 +495,7 @@ const BreachTrustAnalyser = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="mt-4 p-4 bg-red-100 border border-red-200 rounded">
           <div className="flex items-start">
             <Info className="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
