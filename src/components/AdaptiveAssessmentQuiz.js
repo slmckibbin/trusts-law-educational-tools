@@ -209,11 +209,11 @@ const AdaptiveAssessmentQuiz = () => {
   const handleAnswer = (optionIndex) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
-    
+
     const questions = getCurrentQuestions();
     const question = questions[currentQuestion];
     const isCorrect = question.options[optionIndex].correct;
-    
+
     const newAnswer = {
       questionId: question.id,
       questionText: question.question,
@@ -223,16 +223,16 @@ const AdaptiveAssessmentQuiz = () => {
       topic: question.topic,
       difficulty: difficulty
     };
-    
+
     setAnswers([...answers, newAnswer]);
-    
+
     const newScore = isCorrect ? score + 1 : score;
     setScore(newScore);
-    
-    const newStreak = isCorrect ? 
+
+    const newStreak = isCorrect ?
       (performanceTracker.streak >= 0 ? performanceTracker.streak + 1 : 1) :
       (performanceTracker.streak <= 0 ? performanceTracker.streak - 1 : -1);
-    
+
     const updatedTracker = {
       correct: performanceTracker.correct + (isCorrect ? 1 : 0),
       total: performanceTracker.total + 1,
@@ -245,9 +245,9 @@ const AdaptiveAssessmentQuiz = () => {
         }
       }
     };
-    
+
     setPerformanceTracker(updatedTracker);
-    
+
     // Adapt difficulty for next question
     const newDifficulty = adaptDifficulty(isCorrect, difficulty, newStreak);
     if (newDifficulty !== difficulty) {
@@ -257,21 +257,32 @@ const AdaptiveAssessmentQuiz = () => {
 
   const nextQuestion = () => {
     const questions = getCurrentQuestions();
-    if (currentQuestion < questions.length - 1) {
+    // Allow the quiz to continue indefinitely by looping back to question 0
+    // but only if the total questions attempted is less than a certain threshold
+    // or if we want to ensure all difficulties are explored.
+    // For now, let's make it loop through questions once per difficulty cycle,
+    // and if we run out of questions in a difficulty, loop back to the start of that difficulty.
+    const currentDifficultyQuestions = questionBank[difficulty];
+    if (currentQuestion < currentDifficultyQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      // Check if we should continue with different difficulty
-      if (performanceTracker.total < 10) {
-        setCurrentQuestion(0);
-        setSelectedAnswer(null);
-        setShowExplanation(false);
-      } else {
+      // If we've exhausted questions in the current difficulty,
+      // reset currentQuestion to 0 for that difficulty.
+      setCurrentQuestion(0); // Loop back to the start of the current difficulty's questions
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+
+      // We might want to end the quiz after a certain number of questions are answered overall,
+      // or after cycling through all difficulties a few times.
+      // The `performanceTracker.total` can be used for this.
+      if (performanceTracker.total >= 15 && difficulty === 'advanced') { // Example: end after 15 questions if in advanced difficulty
         setQuizComplete(true);
       }
     }
   };
+
 
   const resetQuiz = () => {
     setCurrentQuestion(0);
@@ -299,6 +310,10 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const getPerformanceLevel = () => {
+    // Avoid division by zero if no questions attempted yet
+    if (performanceTracker.total === 0) {
+        return { level: 'Start the Quiz!', color: 'text-gray-600', icon: <Brain /> };
+    }
     const percentage = (performanceTracker.correct / performanceTracker.total) * 100;
     if (percentage >= 90) return { level: 'Excellent', color: 'text-green-600', icon: <Award /> };
     if (percentage >= 75) return { level: 'Good', color: 'text-blue-600', icon: <Target /> };
@@ -308,7 +323,7 @@ const AdaptiveAssessmentQuiz = () => {
 
   if (quizComplete) {
     const performance = getPerformanceLevel();
-    
+
     return (
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
         <div className="text-center mb-6">
@@ -334,7 +349,7 @@ const AdaptiveAssessmentQuiz = () => {
                   <div className="flex items-center">
                     <span className="text-sm mr-2">{stats.correct}/{stats.total}</span>
                     <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div 
+                      <div
                         className={`h-2 rounded-full ${
                           (stats.correct/stats.total) >= 0.8 ? 'bg-green-500' :
                           (stats.correct/stats.total) >= 0.6 ? 'bg-yellow-500' : 'bg-red-500'
@@ -365,7 +380,7 @@ const AdaptiveAssessmentQuiz = () => {
             <div key={index} className="border rounded-lg p-4">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
-                  <div className="font-medium">{answer.questionText}</div>
+                  <div className="font-medium" dangerouslySetInnerHTML={{ __html: answer.questionText }}></div> {/* Use dangerouslySetInnerHTML for <em> tags */}
                   <div className="text-sm text-gray-600 mt-1">
                     Topic: {answer.topic} | Difficulty: {answer.difficulty}
                   </div>
@@ -418,7 +433,7 @@ const AdaptiveAssessmentQuiz = () => {
             Reset
           </button>
         </div>
-        
+
         <div className="flex items-center space-x-4 text-sm mb-4">
           <span className="bg-blue-100 px-3 py-1 rounded-full">
             Question {currentQuestion + 1} of {questions.length}
@@ -439,7 +454,7 @@ const AdaptiveAssessmentQuiz = () => {
         </div>
 
         <div className="w-full bg-gray-200 rounded-full h-2">
-          <div 
+          <div
             className="bg-purple-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
           ></div>
@@ -449,7 +464,8 @@ const AdaptiveAssessmentQuiz = () => {
       <div className="bg-white border rounded-lg p-6">
         <div className="mb-4">
           <span className="text-sm text-purple-600 font-medium">{question.topic}</span>
-          <h3 className="text-xl font-semibold mt-2">{question.question}</h3>
+          {/* Using dangerouslySetInnerHTML to render <em> tags */}
+          <h3 className="text-xl font-semibold mt-2" dangerouslySetInnerHTML={{ __html: question.question }}></h3>
         </div>
 
         <div className="space-y-3 mb-6">
@@ -503,19 +519,20 @@ const AdaptiveAssessmentQuiz = () => {
               onClick={nextQuestion}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              {currentQuestion < questions.length - 1 ? 'Next Question' : 'Continue Learning'}
+              {/* Change button text for clarity when quiz might continue looping */}
+              {performanceTracker.total < 15 ? 'Next Question' : 'Review Results / Next Section'}
             </button>
           </div>
         )}
       </div>
 
-              <div className="mt-6 bg-gray-50 p-4 rounded-lg">
+      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
         <h4 className="font-semibold mb-2">How adaptive learning works:</h4>
         <div className="text-sm text-gray-600 space-y-1">
           <div>• Questions adapt based on your performance - answer correctly to unlock harder questions</div>
           <div>• Your streak affects difficulty adjustments (2+ correct moves up, 2+ wrong moves down)</div>
           <div>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis)</div>
-          <div>• Quiz continues until you've attempted at least 10 questions across different levels</div>
+          <div>• Quiz continues until you've attempted at least 15 questions, or you complete all questions in the advanced difficulty.</div>
         </div>
       </div>
     </div>
