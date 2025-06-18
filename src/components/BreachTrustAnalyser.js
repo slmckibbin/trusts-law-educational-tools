@@ -1,130 +1,77 @@
-// src/Components/BreachTrustAnalyser.js
+// src/components/BreachTrustAnalyser.js
 import { useState, useEffect } from 'react';
 import { AlertTriangle, Shield, Scale, Target, CheckCircle, XCircle, Info, Gavel } from 'lucide-react';
 
 const BreachTrustAnalyser = () => {
   const = useState('');
   const [jurisdiction, setJurisdiction] = useState('');
-  const = useState('');
+  const = useState(''); // Corrected: Added variable names
   const [circumstances, setCircumstances] = useState('');
   const [analysis, setAnalysis] = useState(null);
 
-  const breachTypes =
-      category: 'Conflict of Interest',
-      severity: 'high'
-    },
-    {
-      id: 'investment_loss',
-      title: 'Imprudent investment',
-      description: 'Significant losses from speculative or inappropriate investments.', 
-      category: 'Investment Breach',
-      severity: 'medium'
-    },
-    {
-      id: 'unauthorised_distribution',
-      title: 'Unauthorised distribution',
-      description: 'Distribution made without proper authority or to wrong person.', 
-      category: 'Distribution Breach',
-      severity: 'high'
-    },
-    {
-      id: 'mixing_funds',
-      title: 'Mixing trust and personal funds',
-      description: 'Failed to keep trust assets separate from personal assets.', 
-      category: 'Administrative Breach',
-      severity: 'high'
-    },
-    {
-      id: 'excessive_fees',
-      title: 'Excessive remuneration',
-      description: 'Charged unreasonable fees without proper authorisation.', 
-      category: 'Profit Breach',
-      severity: 'medium'
-    },
-    {
-      id: 'information_refusal',
-      title: 'Refusing information to beneficiaries',
-      description: 'Failed to provide accounts or information to entitled beneficiaries.',
-      category: 'Information Breach',
-      severity: 'low'
-    },
-    {
-      id: 'delegation_failure',
-      title: 'Improper delegation',
-      description: 'Delegated powers inappropriately or without proper oversight.', 
-      category: 'Delegation Breach',
-      severity: 'medium'
-    },
-    {
-      id: 'record_keeping',
-      title: 'Inadequate records',
-      description: 'Failed to maintain proper trust accounts and documentation.', 
-      category: 'Administrative Breach',
-      severity: 'low'
-    }
-  ];
+  const breachTypes =;
 
-  const analyseBreach = () => { 
+  const analyseBreach = () => {
     if (!selectedBreach ||!jurisdiction ||!trusteeType) return;
 
     const breach = breachTypes.find(b => b.id === selectedBreach);
     let severity = breach.severity;
     let consequences =;
-    let defences =; 
+    let defences =;
     let remedies =;
     let liability = 'potential';
 
     // Base analysis for breach type
     switch (selectedBreach) {
       case 'self_dealing':
-        consequences.push('Transaction potentially voidable at beneficiary election.'); 
-        consequences.push('Personal liability for any loss to trust.'); 
-        consequences.push('Potential profit disgorgement.'); 
-        defences.push('Full disclosure and beneficiary consent obtained.'); 
-        defences.push('Independent valuation showing fair price.'); 
-        defences.push('Transaction clearly for trust benefit.'); 
-        remedies.push('Rescission of transaction.'); 
-        remedies.push('Account for profits made.'); 
+        consequences.push('Transaction potentially voidable at beneficiary election.');
+        consequences.push('Personal liability for any loss to trust.');
+        consequences.push('Potential profit disgorgement.');
+        defences.push('Full disclosure and beneficiary consent obtained.');
+        defences.push('Independent valuation showing fair price.');
+        defences.push('Transaction clearly for trust benefit.');
+        remedies.push('Rescission of transaction.');
+        remedies.push('Account for profits made.');
         remedies.push('Compensation for loss.');
         liability = 'high';
         break;
 
       case 'investment_loss':
-        consequences.push('Personal liability if investment was imprudent.'); 
-        consequences.push('Breach of duty of care.'); 
-        defences.push('Investment was within trustee\'s powers.'); 
-        defences.push('Proper professional advice obtained.'); 
-        defences.push('Investment reasonable at time made (not hindsight).'); 
-        defences.push('Part of properly diversified portfolio.'); 
-        remedies.push('Compensation for losses caused by breach.'); 
-        remedies.push('Court may excuse if honest and reasonable.'); 
+        consequences.push('Personal liability if investment was imprudent.');
+        consequences.push('Breach of duty of care.');
+        defences.push('Investment was within trustee\'s powers.');
+        defences.push('Proper professional advice obtained.');
+        defences.push('Investment reasonable at time made (not hindsight).');
+        defences.push('Part of properly diversified portfolio.');
+        remedies.push('Compensation for losses caused by breach.');
+        remedies.push('Court may excuse if honest and reasonable.');
         liability = 'medium';
         break;
 
       case 'unauthorised_distribution':
-        consequences.push('Personal liability to replace trust funds.'); 
-        consequences.push('Potential breach of fiduciary duties.'); 
-        defences.push('Distribution authorised by trust deed.'); 
-        defences.push('Proper exercise of discretion.'); 
-        defences.push('Beneficiary was entitled to receive distribution.'); 
-        remedies.push('Recovery of distributed funds.'); 
-        remedies.push('Personal reimbursement to trust.'); 
+        consequences.push('Personal liability to replace trust funds.');
+        consequences.push('Potential breach of fiduciary duties.');
+        defences.push('Distribution authorised by trust deed.');
+        defences.push('Proper exercise of discretion.');
+        defences.push('Beneficiary was entitled to receive distribution.');
+        remedies.push('Recovery of distributed funds.');
+        remedies.push('Personal reimbursement to trust.');
         liability = 'high';
         break;
 
       case 'information_refusal':
         if (jurisdiction === 'qld2025') {
-          consequences.push('Breach of statutory non-excludable duty (Section 70).'); 
-          consequences.push('Potential court order to provide information.'); 
-          severity = 'medium'; // Higher in Qld (2025)
+          consequences.push('Breach of statutory non-excludable duty (Section 70).');
+          consequences.push('Potential court order to provide information.');
+          severity = 'medium'; // Higher in QLD 2025
         } else {
-          consequences.push('Breach of equitable duty to account.'); 
+          consequences.push('Breach of equitable duty to account.');
         }
-        defences.push('Information genuinely confidential.'); 
-        defences.push('Disclosure would harm trust interests.'); 
-        defences.push('Beneficiary has no legitimate interest in information.'); 
-        remedies.push('Court order for disclosure.'); 
-        remedies.push('Potential cost orders.'); 
+        defences.push('Information genuinely confidential.');
+        defences.push('Disclosure would harm trust interests.');
+        defences.push('Beneficiary has no legitimate interest in information.');
+        remedies.push('Court order for disclosure.');
+        remedies.push('Potential cost orders.');
         liability = 'low';
         break;
     }
@@ -132,36 +79,36 @@ const BreachTrustAnalyser = () => {
     // Jurisdiction-specific analysis
     if (jurisdiction === 'qld2025') {
       if (['self_dealing', 'investment_loss', 'record_keeping', 'information_refusal'].includes(selectedBreach)) {
-        consequences.push('Potential breach of non-excludable statutory duties.'); 
-        defences.push('Section 160 court relief if acted honestly and reasonably.'); 
+        consequences.push('Potential breach of non-excludable statutory duties.');
+        defences.push('Section 160 court relief if acted honestly and reasonably.');
       }
 
       if (trusteeType === 'professional') {
-        consequences.push('Higher professional standard applies (Section 65).'); 
+        consequences.push('Higher professional standard applies (Section 65).');
         severity = severity === 'low'? 'medium' : severity === 'medium'? 'high' : severity;
       }
     }
 
     // Trustee type considerations
     if (trusteeType === 'professional') {
-      consequences.push('Enhanced professional liability standards.'); 
-      consequences.push('Potential regulatory action.'); 
-      defences.push('Acted in accordance with professional standards.'); 
+      consequences.push('Enhanced professional liability standards.');
+      consequences.push('Potential regulatory action.');
+      defences.push('Acted in accordance with professional standards.');
     }
 
     if (trusteeType === 'corporate') {
-      consequences.push('Potential director liability under s 197 *Corporations Act 2001* (Cth).'); 
+      consequences.push('Potential director liability under s 197 *Corporations Act 2001* (Cth).');
       defences.push('Directors acted with proper corporate authority.');
     }
 
     // Circumstance considerations
     if (circumstances.toLowerCase().includes('honest mistake')) {
-      defences.push('Honest and reasonable mistake.'); 
-      remedies.push('Court discretion to excuse under relief provisions.'); 
+      defences.push('Honest and reasonable mistake.');
+      remedies.push('Court discretion to excuse under relief provisions.');
     }
 
     if (circumstances.toLowerCase().includes('beneficiary consent')) {
-      defences.push('Beneficiary knowledge and consent.'); 
+      defences.push('Beneficiary knowledge and consent.');
       liability = liability === 'high'? 'medium' : liability === 'medium'? 'low' : liability;
     }
 
@@ -226,7 +173,7 @@ const BreachTrustAnalyser = () => {
           <AlertTriangle className="w-8 h-8 mr-3 text-red-600" />
           Breach of Trust Analyser
         </h1>
-        <p className="text-gray-600">Identify and analyse potential trustee breaches with legal consequences and defences.</p> 
+        <p className="text-gray-600">Identify and analyse potential trustee breaches with legal consequences and defences.</p>
       </div>
 
       {!analysis? (
@@ -242,7 +189,7 @@ const BreachTrustAnalyser = () => {
               <option value="">Select a breach type...</option>
               {breachTypes.map(breach => (
                 <option key={breach.id} value={breach.id}>
-                  {breach.title} – {breach.description} {/* Australian English: en dash [3] */}
+                  {breach.title} – {breach.description}
                 </option>
               ))}
             </select>
@@ -273,9 +220,9 @@ const BreachTrustAnalyser = () => {
                   jurisdiction === 'qld2025'? 'border-green-500 bg-green-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</div> 
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</div>
                 <div className="text-sm text-gray-600 mt-1">
-                  Non-excludable duties and enhanced protections. 
+                  Non-excludable duties and enhanced protections.
                 </div>
               </button>
               <button
@@ -284,9 +231,9 @@ const BreachTrustAnalyser = () => {
                   jurisdiction === 'qld1973'? 'border-orange-500 bg-orange-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</div> 
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</div>
                 <div className="text-sm text-gray-600 mt-1">
-                  Traditional equitable principles. 
+                  Traditional equitable principles.
                 </div>
               </button>
             </div>
@@ -306,9 +253,9 @@ const BreachTrustAnalyser = () => {
                 >
                   <div className="font-medium capitalize">{type} trustee</div>
                   <div className="text-sm text-gray-600 mt-1">
-                    {type === 'individual' && 'Natural person, basic care standard.'} 
-                    {type === 'professional' && 'Licensed entity, enhanced standards.'} 
-                    {type === 'corporate' && 'Company trustee, director liability.'} 
+                    {type === 'individual' && 'Natural person, basic care standard.'}
+                    {type === 'professional' && 'Licensed entity, enhanced standards.'}
+                    {type === 'corporate' && 'Company trustee, director liability.'}
                   </div>
                 </button>
               ))}
@@ -321,21 +268,21 @@ const BreachTrustAnalyser = () => {
             <textarea
               value={circumstances}
               onChange={(e) => setCircumstances(e.target.value)}
-              placeholder="Describe any relevant circumstances (e.g., honest mistake, beneficiary consent, professional advice obtained, emergency situation, etc.)." 
+              placeholder="Describe any relevant circumstances (e.g., honest mistake, beneficiary consent, professional advice obtained, emergency situation, etc.)."
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-none"
             />
             <div className="text-xs text-gray-500 mt-1">
-              Include factors that might affect liability or available defences. 
+              Include factors that might affect liability or available defences.
             </div>
           </div>
 
           <div className="text-center">
             <button
-              onClick={analyseBreach} 
+              onClick={analyseBreach}
               disabled={!selectedBreach ||!jurisdiction ||!trusteeType}
               className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Analyse breach. 
+              Analyse breach.
             </button>
           </div>
         </div>
@@ -353,7 +300,7 @@ const BreachTrustAnalyser = () => {
                 {analysis.severity.charAt(0).toUpperCase() + analysis.severity.slice(1)} severity
               </span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">
-                {jurisdiction === 'qld2025'? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</>} {/* AGLC4: Italicise Act, not jurisdiction [4, 5] */}
+                {jurisdiction === 'qld2025'? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</>}
               </span>
             </div>
           </div>
@@ -371,7 +318,7 @@ const BreachTrustAnalyser = () => {
                   {getLiabilityText(analysis.liability)}
                 </div>
                 <div className="text-sm text-gray-600">
-                  Based on breach type, jurisdiction, and circumstances. 
+                  Based on breach type, jurisdiction, and circumstances.
                 </div>
               </div>
             </div>
@@ -434,23 +381,23 @@ const BreachTrustAnalyser = () => {
             <div className="space-y-2 text-sm">
               <div className="flex items-start">
                 <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">1</span>
-                <span>Cease any ongoing breach immediately.</span> {/* Australian English: period outside quote [1, 2] */}
+                <span>Cease any ongoing breach immediately.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">2</span>
-                <span>Obtain urgent legal advice from a specialist trust lawyer.</span> {/* Australian English: period outside quote [1, 2] */}
+                <span>Obtain urgent legal advice from a specialist trust lawyer.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">3</span>
-                <span>Document all relevant facts and circumstances.</span> {/* Australian English: period outside quote [1, 2] */}
+                <span>Document all relevant facts and circumstances.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">4</span>
-                <span>Consider disclosure to beneficiaries if appropriate.</span> {/* Australian English: period outside quote [1, 2] */}
+                <span>Consider disclosure to beneficiaries if appropriate.</span>
               </div>
               <div className="flex items-start">
                 <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">5</span>
-                <span>Review insurance coverage and notify insurers if required.</span> {/* Australian English: period outside quote [1, 2] */}
+                <span>Review insurance coverage and notify insurers if required.</span>
               </div>
             </div>
           </div>
@@ -460,7 +407,7 @@ const BreachTrustAnalyser = () => {
               onClick={reset}
               className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
-              Analyse another breach. 
+              Analyse another breach.
             </button>
           </div>
         </div>
@@ -473,21 +420,21 @@ const BreachTrustAnalyser = () => {
           <div>
             <h4 className="font-medium text-red-700 mb-2">Types of breach</h4>
             <ul className="space-y-1">
-              <li>• Breach of fiduciary duties (loyalty, no conflict).</li> 
-              <li>• Breach of duty of care (prudent person standard).</li> 
-              <li>• Unauthorised acts (exceeding powers).</li> 
-              <li>• Administrative failures (records, accounts).</li> 
-              <li>• Distributive breaches (wrong payments).</li> 
+              <li>• Breach of fiduciary duties (loyalty, no conflict).</li>
+              <li>• Breach of duty of care (prudent person standard).</li>
+              <li>• Unauthorised acts (exceeding powers).</li>
+              <li>• Administrative failures (records, accounts).</li>
+              <li>• Distributive breaches (wrong payments).</li>
             </ul>
           </div>
           <div>
             <h4 className="font-medium text-blue-700 mb-2">Relief and protection</h4>
             <ul className="space-y-1">
-              <li>• Court discretion to excuse honest, reasonable trustees.</li> 
-              <li>• Beneficiary consent and acquiescence.</li> 
-              <li>• Professional advice defence.</li> 
-              <li>• Insurance coverage where available.</li> 
-              <li>• Limitation periods for claims.</li> 
+              <li>• Court discretion to excuse honest, reasonable trustees.</li>
+              <li>• Beneficiary consent and acquiescence.</li>
+              <li>• Professional advice defence.</li>
+              <li>• Insurance coverage where available.</li>
+              <li>• Limitation periods for claims.</li>
             </ul>
           </div>
         </div>
