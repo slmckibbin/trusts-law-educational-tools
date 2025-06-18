@@ -302,7 +302,7 @@ const PowerAuthorisationChecker = () => {
             <textarea
               value={trustDeedProvisions}
               onChange={(e) => setTrustDeedProvisions(e.target.value)}
-              placeholder="Enter any specific trust deed clauses that may be relevant (e.g., investment restrictions, specific powers granted, etc.)"
+              placeholder="Enter any specific trust deed clauses that may be relevant (eg, investment restrictions, specific powers granted, etc)"
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-none"
             />
             <div className="text-xs text-gray-500 mt-1">
