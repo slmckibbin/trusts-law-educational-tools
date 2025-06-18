@@ -3,22 +3,79 @@ import { useState, useEffect } from 'react';
 import { AlertTriangle, Shield, Scale, Target, CheckCircle, XCircle, Info, Gavel } from 'lucide-react';
 
 const BreachTrustAnalyser = () => {
-  const = useState('');
+  const [selectedBreach, setSelectedBreach] = useState('');
   const [jurisdiction, setJurisdiction] = useState('');
-  const = useState(''); // Corrected: Added variable names
+  const [trusteeType, setTrusteeType] = useState('');
   const [circumstances, setCircumstances] = useState('');
   const [analysis, setAnalysis] = useState(null);
 
-  const breachTypes =;
+  const breachTypes = [
+    {
+      id: 'self_dealing',
+      title: 'Self-dealing transaction',
+      description: 'Trustee personally benefits from trust transaction',
+      category: 'Conflict of interest',
+      severity: 'high'
+    },
+    {
+      id: 'investment_loss',
+      title: 'Imprudent investment',
+      description: 'Investment losses due to breach of duty of care',
+      category: 'Duty of care',
+      severity: 'medium'
+    },
+    {
+      id: 'unauthorised_distribution',
+      title: 'Unauthorised distribution',
+      description: 'Payment to wrong beneficiary or incorrect amount',
+      category: 'Administrative breach',
+      severity: 'high'
+    },
+    {
+      id: 'information_refusal',
+      title: 'Refusing information disclosure',
+      description: 'Failing to provide accounts or trust information',
+      category: 'Administrative breach',
+      severity: 'low'
+    },
+    {
+      id: 'record_keeping',
+      title: 'Inadequate record keeping',
+      description: 'Failure to maintain proper trust records',
+      category: 'Administrative breach',
+      severity: 'low'
+    },
+    {
+      id: 'delegation_failure',
+      title: 'Improper delegation',
+      description: 'Delegating duties inappropriately or without oversight',
+      category: 'Duty of care',
+      severity: 'medium'
+    },
+    {
+      id: 'conflict_of_interest',
+      title: 'Undisclosed conflict of interest',
+      description: 'Acting despite personal interest without disclosure',
+      category: 'Conflict of interest',
+      severity: 'high'
+    },
+    {
+      id: 'excessive_remuneration',
+      title: 'Excessive trustee fees',
+      description: 'Charging unreasonable remuneration for services',
+      category: 'Conflict of interest',
+      severity: 'medium'
+    }
+  ];
 
   const analyseBreach = () => {
-    if (!selectedBreach ||!jurisdiction ||!trusteeType) return;
+    if (!selectedBreach || !jurisdiction || !trusteeType) return;
 
     const breach = breachTypes.find(b => b.id === selectedBreach);
     let severity = breach.severity;
-    let consequences =;
-    let defences =;
-    let remedies =;
+    let consequences = [];
+    let defences = [];
+    let remedies = [];
     let liability = 'potential';
 
     // Base analysis for breach type
@@ -74,6 +131,62 @@ const BreachTrustAnalyser = () => {
         remedies.push('Potential cost orders.');
         liability = 'low';
         break;
+
+      case 'record_keeping':
+        if (jurisdiction === 'qld2025') {
+          consequences.push('Breach of statutory record keeping duty (Section 69).');
+          consequences.push('Potential difficulty defending other breach claims.');
+        }
+        consequences.push('Administrative breach affecting trust management.');
+        defences.push('Records maintained in alternative format.');
+        defences.push('Essential information still available.');
+        remedies.push('Order to rectify record keeping systems.');
+        remedies.push('Potential cost orders.');
+        liability = 'low';
+        break;
+
+      case 'delegation_failure':
+        consequences.push('Personal liability for delegate\'s actions.');
+        consequences.push('Breach of duty to supervise properly.');
+        if (jurisdiction === 'qld2025') {
+          defences.push('Enhanced delegation powers under ss 72-73.');
+          defences.push('Proper appointment and supervision processes followed.');
+        }
+        defences.push('Delegation was necessary and appropriate.');
+        defences.push('Delegate was suitably qualified.');
+        remedies.push('Personal liability for losses caused.');
+        remedies.push('Improved supervision and oversight.');
+        liability = 'medium';
+        break;
+
+      case 'conflict_of_interest':
+        consequences.push('Breach of fiduciary duty of loyalty.');
+        consequences.push('Transaction potentially voidable.');
+        consequences.push('Account for any profits made.');
+        defences.push('Full disclosure to beneficiaries.');
+        defences.push('Beneficiary consent obtained.');
+        defences.push('Transaction in best interests of trust.');
+        remedies.push('Disgorgement of profits.');
+        remedies.push('Compensation for losses.');
+        liability = 'high';
+        break;
+
+      case 'excessive_remuneration':
+        consequences.push('Liability to repay excess remuneration.');
+        consequences.push('Breach of duty not to profit improperly.');
+        defences.push('Remuneration authorised by trust deed.');
+        defences.push('Reasonable for services actually provided.');
+        defences.push('Beneficiary consent to remuneration level.');
+        remedies.push('Repayment of excessive amounts.');
+        remedies.push('Reduction of future remuneration.');
+        liability = 'medium';
+        break;
+
+      default:
+        consequences.push('Potential breach of trustee duties.');
+        defences.push('Acted honestly and reasonably.');
+        remedies.push('Court discretion to provide relief.');
+        liability = 'potential';
     }
 
     // Jurisdiction-specific analysis
@@ -85,7 +198,7 @@ const BreachTrustAnalyser = () => {
 
       if (trusteeType === 'professional') {
         consequences.push('Higher professional standard applies (Section 65).');
-        severity = severity === 'low'? 'medium' : severity === 'medium'? 'high' : severity;
+        severity = severity === 'low' ? 'medium' : severity === 'medium' ? 'high' : severity;
       }
     }
 
@@ -97,7 +210,7 @@ const BreachTrustAnalyser = () => {
     }
 
     if (trusteeType === 'corporate') {
-      consequences.push('Potential director liability under s 197 *Corporations Act 2001* (Cth).');
+      consequences.push('Potential director liability under s 197 Corporations Act 2001 (Cth).');
       defences.push('Directors acted with proper corporate authority.');
     }
 
@@ -109,7 +222,7 @@ const BreachTrustAnalyser = () => {
 
     if (circumstances.toLowerCase().includes('beneficiary consent')) {
       defences.push('Beneficiary knowledge and consent.');
-      liability = liability === 'high'? 'medium' : liability === 'medium'? 'low' : liability;
+      liability = liability === 'high' ? 'medium' : liability === 'medium' ? 'low' : liability;
     }
 
     setAnalysis({
@@ -176,7 +289,7 @@ const BreachTrustAnalyser = () => {
         <p className="text-gray-600">Identify and analyse potential trustee breaches with legal consequences and defences.</p>
       </div>
 
-      {!analysis? (
+      {!analysis ? (
         <div className="space-y-6">
           {/* Breach Type Selection */}
           <div>
@@ -217,10 +330,10 @@ const BreachTrustAnalyser = () => {
               <button
                 onClick={() => setJurisdiction('qld2025')}
                 className={`p-4 border rounded-lg text-left ${
-                  jurisdiction === 'qld2025'? 'border-green-500 bg-green-50' : 'border-gray-300'
+                  jurisdiction === 'qld2025' ? 'border-green-500 bg-green-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</div>
+                <div className="font-medium">Queensland <em>Trusts Act 2025</em> (Qld)</div>
                 <div className="text-sm text-gray-600 mt-1">
                   Non-excludable duties and enhanced protections.
                 </div>
@@ -228,10 +341,10 @@ const BreachTrustAnalyser = () => {
               <button
                 onClick={() => setJurisdiction('qld1973')}
                 className={`p-4 border rounded-lg text-left ${
-                  jurisdiction === 'qld1973'? 'border-orange-500 bg-orange-50' : 'border-gray-300'
+                  jurisdiction === 'qld1973' ? 'border-orange-500 bg-orange-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</div>
+                <div className="font-medium">Queensland <em>Trusts Act 1973</em> (Qld)</div>
                 <div className="text-sm text-gray-600 mt-1">
                   Traditional equitable principles.
                 </div>
@@ -248,7 +361,7 @@ const BreachTrustAnalyser = () => {
                   key={type}
                   onClick={() => setTrusteeType(type)}
                   className={`p-4 border rounded-lg text-left ${
-                    trusteeType === type? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                    trusteeType === type ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
                   }`}
                 >
                   <div className="font-medium capitalize">{type} trustee</div>
@@ -279,10 +392,10 @@ const BreachTrustAnalyser = () => {
           <div className="text-center">
             <button
               onClick={analyseBreach}
-              disabled={!selectedBreach ||!jurisdiction ||!trusteeType}
+              disabled={!selectedBreach || !jurisdiction || !trusteeType}
               className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Analyse breach.
+              Analyse breach
             </button>
           </div>
         </div>
@@ -300,15 +413,15 @@ const BreachTrustAnalyser = () => {
                 {analysis.severity.charAt(0).toUpperCase() + analysis.severity.slice(1)} severity
               </span>
               <span className="bg-blue-100 px-3 py-1 rounded-full">
-                {jurisdiction === 'qld2025'? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</>}
+                {jurisdiction === 'qld2025' ? <>Queensland <em>Trusts Act 2025</em> (Qld)</> : <>Queensland <em>Trusts Act 1973</em> (Qld)</>}
               </span>
             </div>
           </div>
 
           {/* Liability Assessment */}
           <div className={`p-6 rounded-lg border-2 ${
-            analysis.liability === 'high'? 'border-red-300 bg-red-50' :
-            analysis.liability === 'medium'? 'border-yellow-300 bg-yellow-50' :
+            analysis.liability === 'high' ? 'border-red-300 bg-red-50' :
+            analysis.liability === 'medium' ? 'border-yellow-300 bg-yellow-50' :
             'border-green-300 bg-green-50'
           }`}>
             <div className="flex items-center mb-4">
@@ -407,7 +520,7 @@ const BreachTrustAnalyser = () => {
               onClick={reset}
               className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
-              Analyse another breach.
+              Analyse another breach
             </button>
           </div>
         </div>
@@ -420,21 +533,21 @@ const BreachTrustAnalyser = () => {
           <div>
             <h4 className="font-medium text-red-700 mb-2">Types of breach</h4>
             <ul className="space-y-1">
-              <li>• Breach of fiduciary duties (loyalty, no conflict).</li>
-              <li>• Breach of duty of care (prudent person standard).</li>
-              <li>• Unauthorised acts (exceeding powers).</li>
-              <li>• Administrative failures (records, accounts).</li>
-              <li>• Distributive breaches (wrong payments).</li>
+              <li>• Breach of fiduciary duties (loyalty, no conflict)</li>
+              <li>• Breach of duty of care (prudent person standard)</li>
+              <li>• Unauthorised acts (exceeding powers)</li>
+              <li>• Administrative failures (records, accounts)</li>
+              <li>• Distributive breaches (wrong payments)</li>
             </ul>
           </div>
           <div>
             <h4 className="font-medium text-blue-700 mb-2">Relief and protection</h4>
             <ul className="space-y-1">
-              <li>• Court discretion to excuse honest, reasonable trustees.</li>
-              <li>• Beneficiary consent and acquiescence.</li>
-              <li>• Professional advice defence.</li>
-              <li>• Insurance coverage where available.</li>
-              <li>• Limitation periods for claims.</li>
+              <li>• Court discretion to excuse honest, reasonable trustees</li>
+              <li>• Beneficiary consent and acquiescence</li>
+              <li>• Professional advice defence</li>
+              <li>• Insurance coverage where available</li>
+              <li>• Limitation periods for claims</li>
             </ul>
           </div>
         </div>
