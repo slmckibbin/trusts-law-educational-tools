@@ -1,18 +1,18 @@
 import React from 'react';
-import './App.css'; 
+import './App.css'; // Keep your main CSS file
 
-import AdaptiveAssessmentQuiz from './Components/AdaptiveAssessmentQuiz';
-import BreachTrustAnalyser from './Components/BreachTrustAnalyser';
-import CaseStudySimulator from './Components/CaseStudySimulator';
-import InteractiveDutyChecker from './Components/InteractiveDutyChecker';
-import JurisdictionComparisonTool from './Components/JurisdictionComparisonTool';
-import PowerAuthorisationChecker from './Components/PowerAuthorisationChecker';
+import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; // Changed to lowercase 'components'
+import BreachTrustAnalyser from './components/BreachTrustAnalyser'; // Changed to lowercase 'components'
+import CaseStudySimulator from './components/CaseStudySimulator'; // Changed to lowercase 'components'
+import InteractiveDutyChecker from './components/InteractiveDutyChecker'; // Changed to lowercase 'components'
+import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; // Changed to lowercase 'components'
+import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; // Changed to lowercase 'components'
 
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
-      {/* Header and Navigation */}
+   
       <header className="w-full max-w-4xl bg-blue-700 text-white p-4 rounded-lg shadow-md mb-8">
         <h1 className="text-3xl font-bold text-center mb-2">
           Trusts Law Educational Tools
@@ -39,9 +39,9 @@ function App() {
         </nav>
       </header>
 
-      {/* Main Content Area for Tools */}
+
       <main className="w-full max-w-4xl flex flex-col gap-8">
-        {/* Adaptive Assessment Quiz Section */}
+
         <section id="adaptive-assessment-quiz" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Adaptive Assessment Quiz
@@ -54,7 +54,7 @@ function App() {
           </div>
         </section>
 
-        {/* Breach Trust Analyser Section */}
+
         <section id="breach-trust-analyser" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Breach of Trust Analyser
@@ -67,7 +67,6 @@ function App() {
           </div>
         </section>
 
-        {/* Case Study Simulator Section */}
         <section id="case-study-simulator" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Case Study Simulator
@@ -80,7 +79,6 @@ function App() {
           </div>
         </section>
 
-        {/* Interactive Duty Checker Section */}
         <section id="interactive-duty-checker" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Interactive Duty Checker
@@ -93,7 +91,6 @@ function App() {
           </div>
         </section>
 
-        {/* Jurisdiction Comparison Tool Section */}
         <section id="jurisdiction-comparison-tool" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Jurisdiction Comparison Tool
@@ -106,7 +103,6 @@ function App() {
           </div>
         </section>
 
-        {/* Power Authorisation Checker Section */}
         <section id="power-authorisation-checker" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Power and Authorisation Checker
@@ -121,7 +117,6 @@ function App() {
 
       </main>
 
-      {/* Footer (Optional) */}
       <footer className="mt-8 text-center text-gray-600 text-sm">
         <p>&copy; 2025 Trusts Law Educational Tools. All rights reserved.</p>
       </footer>
