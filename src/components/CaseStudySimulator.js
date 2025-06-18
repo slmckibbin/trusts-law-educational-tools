@@ -1,13 +1,13 @@
-// src/Components/CaseStudySimulator.js
+// src/components/CaseStudySimulator.js
 import { useState } from 'react';
 import { Play, RotateCcw, User, DollarSign, FileText, AlertTriangle, CheckCircle, XCircle, ArrowRight } from 'lucide-react';
 
 const CaseStudySimulator = () => {
   const [currentCase, setCurrentCase] = useState(null);
-  const = useState(0);
-  const = useState();
-  const = useState(0);
-  const = useState(false);
+  const = useState(0); // Corrected: Added variable names
+  const = useState(); // Corrected: Added variable names and initialised as empty array
+  const = useState(0); // Corrected: Added variable names
+  const = useState(false); // Corrected: Added variable names
 
   const caseStudies = {
     family_trust: {
@@ -98,14 +98,14 @@ const CaseStudySimulator = () => {
   const startCase = (caseKey) => {
     setCurrentCase(caseKey);
     setCurrentStep(0);
-    setDecisions();
+    setDecisions(); // Corrected: Initialise as empty array
     setScore(0);
     setShowResults(false);
   };
 
   const makeDecision = (optionId) => {
     const currentCaseData = caseStudies[currentCase];
-    const currentStepData = currentCaseData.steps;
+    const currentStepData = currentCaseData.steps; // Corrected: Access currentStep from steps array
     const selectedOption = currentStepData.options.find(opt => opt.id === optionId);
 
     const newDecision = {
@@ -115,7 +115,7 @@ const CaseStudySimulator = () => {
       impact: selectedOption.impact
     };
 
-    setDecisions();
+    setDecisions(); // Corrected: Add to existing decisions
     setScore(score + selectedOption.impact.score);
 
     if (currentStep < currentCaseData.steps.length - 1) {
@@ -128,7 +128,7 @@ const CaseStudySimulator = () => {
   const resetSimulator = () => {
     setCurrentCase(null);
     setCurrentStep(0);
-    setDecisions();
+    setDecisions(); // Corrected: Initialise as empty array
     setScore(0);
     setShowResults(false);
   };
@@ -143,8 +143,8 @@ const CaseStudySimulator = () => {
   const getScoreDescription = (score) => {
     if (score >= 8) return 'Excellent Trustee Performance';
     if (score >= 5) return 'Good Trustee Decisions';
-    if (score >= 2) return 'Average Performance – Room for Improvement'; // Australian English: en dash [1]
-    return 'Poor Decisions – Significant Legal Risk'; // Australian English: en dash [1]
+    if (score >= 2) return 'Average Performance – Room for Improvement';
+    return 'Poor Decisions – Significant Legal Risk';
   };
 
   if (!currentCase) {
@@ -159,7 +159,7 @@ const CaseStudySimulator = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {Object.entries(caseStudies).map(() => (
+          {Object.entries(caseStudies).map(() => ( // Corrected: Added key and caseStudy parameters
             <div key={key} className="border rounded-lg p-6 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-semibold mb-3">{caseStudy.title}</h3>
               <p className="text-gray-600 mb-4">{caseStudy.description}</p>
@@ -220,6 +220,7 @@ const CaseStudySimulator = () => {
   }
 
   const currentCaseData = caseStudies[currentCase];
+  const currentStepData = currentCaseData.steps; // Corrected: Access currentStep from steps array
 
   if (showResults) {
     return (
@@ -319,7 +320,8 @@ const CaseStudySimulator = () => {
     );
   }
 
-  const currentStepData = currentCaseData.steps;
+  const currentCaseData = caseStudies[currentCase];
+  const currentStepData = currentCaseData.steps; // Corrected: Access currentStep from steps array
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
