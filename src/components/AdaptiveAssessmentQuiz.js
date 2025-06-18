@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Brain, CheckCircle, XCircle, ArrowRight, ArrowLeft, Trophy, Target, BookOpen, AlertTriangle } from 'lucide-react';
 
 const AdaptiveAssessmentQuiz = () => {
-  const [currentQuestion, setCurrentQuestion] = useState('');
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [difficulty, setDifficulty] = useState('intermediate');
@@ -217,22 +217,16 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const nextQuestion = () => {
-    // Allow the quiz to continue indefinitely by looping back to question 0
-    // but only if the total questions attempted is less than a certain threshold
     const currentDifficultyQuestions = getQuestionsByDifficulty(difficulty);
     if (currentQuestion < currentDifficultyQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setFeedback(null);
     } else {
-      // If we've exhausted questions in the current difficulty,
-      // reset currentQuestion to 0 for that difficulty.
-      setCurrentQuestion(0); // Loop back to the start of the current difficulty's questions
+      setCurrentQuestion(0);
       setFeedback(null);
 
-      // We might want to end the quiz after a certain number of questions are answered overall,
-      // or after cycling through all difficulties a few times.
       const totalAnswered = Object.keys(answers).length;
-      if (totalAnswered >= 15 && difficulty === 'advanced') { // Example: end after 15 questions if in advanced difficulty
+      if (totalAnswered >= 15 && difficulty === 'advanced') {
         setQuizComplete(true);
         setShowResults(true);
       }
@@ -266,7 +260,6 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const getPerformanceLevel = () => {
-    // Avoid division by zero if no questions attempted yet
     const totalAnswered = Object.keys(answers).length;
     if (totalAnswered === 0) {
       return { level: 'Start the Quiz!', color: 'text-gray-600', icon: <Brain className="w-6 h-6" /> };
@@ -325,7 +318,6 @@ const AdaptiveAssessmentQuiz = () => {
           </div>
         </div>
 
-        {/* Review individual answers */}
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-4">Review your answers</h3>
           <div className="space-y-4 max-h-96 overflow-y-auto">
@@ -356,6 +348,7 @@ const AdaptiveAssessmentQuiz = () => {
             ))}
           </div>
         </div>
+
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-4">Performance by area</h3>
           <div className="space-y-3">
@@ -375,38 +368,6 @@ const AdaptiveAssessmentQuiz = () => {
                     <span className="text-sm text-gray-600 mr-3">{areaCorrect}/{areaTotal}</span>
                     <div className="w-20 bg-gray-200 rounded-full h-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full" 
-                        style={{ width: `${areaPercentage}%` }}
-                      ></div>
-                    </div>
-                    <span className="ml-2 text-sm font-medium w-12">{areaPercentage}%</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Performance by area */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-4">Performance by area</h3>
-          <div className="space-y-3">
-            {['Statutory duties', 'Record keeping', 'Duty of care', 'Information disclosure', 'Delegation powers', 'Conflict of interest', 'Trustee powers', 'Judicial relief', 'Exclusion clauses'].map(area => {
-              const areaQuestions = answeredQuestions.filter(a => a.questionData.area === area);
-              const areaCorrect = areaQuestions.filter(a => a.correct).length;
-              const areaTotal = areaQuestions.length;
-              
-              if (areaTotal === 0) return null;
-              
-              const areaPercentage = Math.round((areaCorrect / areaTotal) * 100);
-              
-              return (
-                <div key={area} className="flex items-centre justify-between p-3 bg-gray-50 rounded">
-                  <span className="font-medium">{area}</span>
-                  <div className="flex items-centre">
-                    <span className="text-sm text-gray-600 mr-3">{areaCorrect}/{areaTotal}</span>
-                    <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div 
                         className={`h-2 rounded-full ${
                           areaPercentage >= 80 ? 'bg-green-500' :
                           areaPercentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
@@ -421,6 +382,7 @@ const AdaptiveAssessmentQuiz = () => {
             })}
           </div>
         </div>
+
         <div className="mb-6 bg-blue-50 p-6 rounded-lg">
           <h3 className="text-lg font-semibold mb-4 flex items-center">
             <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
@@ -451,36 +413,6 @@ const AdaptiveAssessmentQuiz = () => {
           </div>
         </div>
 
-        {/* Improvement recommendations */}
-        <div className="mb-6 bg-blue-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4 flex items-centre">
-            <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
-            Study recommendations
-          </h3>
-          <div className="space-y-2 text-sm">
-            {performance.level === 'Needs Improvement' && (
-              <>
-                <p>• Review fundamental trust concepts and the *Trusts Act 2025* (Qld) provisions</p>
-                <p>• Focus on understanding non-excludable duties under sections 64-70</p>
-                <p>• Study the differences between professional and individual trustee standards</p>
-              </>
-            )}
-            {performance.level === 'Satisfactory' && (
-              <>
-                <p>• Strengthen understanding of advanced topics like judicial relief provisions</p>
-                <p>• Review case law interactions with statutory reforms</p>
-                <p>• Practice application of legal principles to complex scenarios</p>
-              </>
-            )}
-            {(performance.level === 'Good' || performance.level === 'Excellent') && (
-              <>
-                <p>• Excellent work! Consider exploring comparative jurisdictional approaches</p>
-                <p>• Review recent case law developments and academic commentary</p>
-                <p>• Focus on practical application in professional trustee contexts</p>
-              </>
-            )}
-          </div>
-        </div>
         <div className="text-center">
           <button
             onClick={resetQuiz}
@@ -490,7 +422,6 @@ const AdaptiveAssessmentQuiz = () => {
           </button>
         </div>
 
-        {/* Legal disclaimer */}
         <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
           <div className="flex items-start">
             <AlertTriangle className="w-5 h-5 text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
@@ -513,7 +444,6 @@ const AdaptiveAssessmentQuiz = () => {
         <p className="text-gray-600">Interactive quiz adapting to your knowledge level</p>
       </div>
 
-      {/* Progress indicator */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">Progress</span>
@@ -535,7 +465,6 @@ const AdaptiveAssessmentQuiz = () => {
 
       {questionData && (
         <div className="space-y-6">
-          {/* Question */}
           <div className="bg-gray-50 p-6 rounded-lg">
             <div className="flex items-center justify-between mb-4">
               <span className={`px-3 py-1 rounded-full text-sm ${
@@ -582,7 +511,6 @@ const AdaptiveAssessmentQuiz = () => {
             </div>
           </div>
 
-          {/* Feedback */}
           {feedback && (
             <div className={`p-6 rounded-lg border-l-4 ${
               feedback.isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'
@@ -616,7 +544,6 @@ const AdaptiveAssessmentQuiz = () => {
             </div>
           )}
 
-          {/* Navigation */}
           <div className="flex items-center justify-between">
             <button
               onClick={previousQuestion}
@@ -632,7 +559,6 @@ const AdaptiveAssessmentQuiz = () => {
                 onClick={nextQuestion}
                 className="flex items-center px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
               >
-                {/* Change button text for clarity when quiz might continue looping */}
                 {Object.keys(answers).length < 15 ? 'Next Question' : 'Review Results / Next Section'}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
@@ -641,17 +567,16 @@ const AdaptiveAssessmentQuiz = () => {
         </div>
       )}
 
-      {/* Instructions */}
       <div className="mt-8 bg-blue-50 p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">How the adaptive assessment works</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div>
             <h4 className="font-medium text-blue-700 mb-2">Adaptive difficulty</h4>
             <ul className="space-y-1">
-              <li>• Questions adapt based on your performance - answer correctly to unlock harder questions</li>
-              <li>• Your streak affects difficulty adjustments (2+ correct moves up, 2+ wrong moves down)</li>
-              <li>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis)</li>
-              <li>• Quiz continues until you've attempted at least 15 questions, or you complete all questions in the advanced difficulty</li>
+              <li>• Questions adapt based on your performance</li>
+              <li>• Answer correctly to unlock harder questions</li>
+              <li>• Three difficulty levels: Basic, Intermediate, Advanced</li>
+              <li>• Quiz continues until 15+ questions completed</li>
             </ul>
           </div>
           <div>
