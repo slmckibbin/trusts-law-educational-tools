@@ -1,17 +1,17 @@
-// src/Components/AdaptiveAssessmentQuiz.js
+// src/components/AdaptiveAssessmentQuiz.js
 
 import { useState, useEffect } from 'react';
 import { Brain, Target, TrendingUp, Award, RotateCcw, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 const AdaptiveAssessmentQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState();
-  const = useState(0);
-  const = useState('basic'); // basic, intermediate, advanced
+  const [answers, setAnswers] = useState(); // Corrected: Initialised as empty array
+  const = useState(0); // Corrected: Added variable names
+  const = useState('basic'); // Corrected: Added variable names
   const [quizComplete, setQuizComplete] = useState(false);
-  const = useState(null);
-  const = useState(false);
-  const = useState({
+  const = useState(null); // Corrected: Added variable names
+  const = useState(false); // Corrected: Added variable names
+  const = useState({ // Corrected: Added variable names
     correct: 0,
     total: 0,
     streak: 0,
@@ -22,7 +22,7 @@ const AdaptiveAssessmentQuiz = () => {
     basic:,
         explanation: "The right of indemnification and reimbursement is the most crucial protection, allowing trustees to recover properly incurred expenses from trust assets.",
         difficulty: 'basic',
-        qld2025Note: "Section 155 strengthens this right in *Trusts Act 2025* (Qld)." 
+        qld2025Note: "Section 155 strengthens this right in *Trusts Act 2025* (Qld)."
       },
       {
         id: 'b2',
@@ -42,31 +42,25 @@ const AdaptiveAssessmentQuiz = () => {
           { text: "Guarantee investment returns", correct: true },
           { text: "Keep proper accounts", correct: false }
         ],
-        explanation: "Trustees cannot guarantee investment returns – they must invest prudently but are not liable for market losses if acting properly.", 
+        explanation: "Trustees cannot guarantee investment returns – they must invest prudently but are not liable for market losses if acting properly.",
         difficulty: 'basic'
       },
       {
         id: 'b4',
         topic: 'Queensland 2025',
-        question: "What is the main innovation of Queensland <em>Trusts Act 2025</em> (Qld)?", 
+        question: "What is the main innovation of Queensland <em>Trusts Act 2025</em> (Qld)?",
         options: [
           { text: "Allows unlimited fees", correct: false },
           { text: "Eliminates all trustee duties", correct: false },
           { text: "Creates non-excludable core duties", correct: true },
           { text: "Permits gambling with trust funds", correct: false }
         ],
-        explanation: "The *Trusts Act 2025* (Qld) introduces core duties that cannot be excluded by trust deeds, providing minimum beneficiary protection.", 
+        explanation: "The *Trusts Act 2025* (Qld) introduces core duties that cannot be excluded by trust deeds, providing minimum beneficiary protection.",
         difficulty: 'basic',
-        qld2025Note: "Sections 64–70 establish these non-excludable duties including honesty, care, records, and information disclosure." 
+        qld2025Note: "Sections 64–70 establish these non-excludable duties including honesty, care, records, and information disclosure."
       }
     ],
-    intermediate:
-        options: [
-          { text: "No difference in standards", correct: false },
-          { text: "Professional trustees must exercise care equivalent to their profession", correct: true },
-          { text: "Professional trustees have unlimited immunity", correct: false },
-          { text: "Only professional trustees can charge fees", correct: false }
-        ],
+    intermediate:,
         explanation: "Section 65 requires professional trustees to meet the standard of care expected in their profession, business, or employment.",
         difficulty: 'intermediate',
         qld2025Note: "This creates a tiered system: professional (Section 65), knowledgeable (Section 66), and ordinary (Section 67) trustees."
@@ -74,14 +68,14 @@ const AdaptiveAssessmentQuiz = () => {
       {
         id: 'i2',
         topic: 'Information Rights',
-        question: "Under *Schmidt v Rosewood Trust Ltd*, what determines beneficiary information rights?", 
+        question: "Under *Schmidt v Rosewood Trust Ltd*, what determines beneficiary information rights?",
         options: [
           { text: "Only fixed beneficial interests give information rights", correct: false },
           { text: "All beneficiaries have identical information rights", correct: false },
           { text: "Court discretion based on nature of interest and relevance", correct: true },
           { text: "Only trustees can decide what information to provide", correct: false }
         ],
-        explanation: "*Schmidt* established that information rights depend on court discretion, considering the beneficiary’s interest and the relevance of information sought.", 
+        explanation: "*Schmidt* established that information rights depend on court discretion, considering the beneficiary’s interest and the relevance of information sought.",
         difficulty: 'intermediate'
       },
       {
@@ -95,26 +89,21 @@ const AdaptiveAssessmentQuiz = () => {
       {
         id: 'i4',
         topic: 'Delegation',
-        question: "Under Queensland <em>Trusts Act 2025</em> (Qld), what are the new delegation powers?", 
+        question: "Under Queensland <em>Trusts Act 2025</em> (Qld), what are the new delegation powers?",
         options:,
-        explanation: "Sections 72–73 allow delegation of investment and administrative functions (maximum 12 months) but trustees must maintain oversight.", 
+        explanation: "Sections 72–73 allow delegation of investment and administrative functions (maximum 12 months) but trustees must maintain oversight.",
         difficulty: 'intermediate',
-        qld2025Note: "This represents a significant expansion from the restrictive approach in the *Trusts Act 1973* (Qld)." 
+        qld2025Note: "This represents a significant expansion from the restrictive approach in the *Trusts Act 1973* (Qld)."
       }
     ],
-    advanced:
-        options: [
-          { text: "Always when the trust incurs any debt", correct: false },
-          { text: "Only when directors personally guarantee trust debts", correct: false },
-          { text: "When trustee cannot pay debts and lacks full indemnity due to breach/limitation", correct: true },
-          { text: "Never – directors are always protected", correct: false } 
-        explanation: "Section 197 of the *Corporations Act 2001* (Cth) creates director liability when the corporate trustee cannot pay its debts and is not entitled to full indemnity due to breach of trust, acting outside powers, or deed limitations.", 
+    advanced:,
+        explanation: "Section 197 of the *Corporations Act 2001* (Cth) creates director liability when the corporate trustee cannot pay its debts and is not entitled to full indemnity due to breach of trust, acting outside powers, or deed limitations.",
         difficulty: 'advanced'
       },
       {
         id: 'a2',
         topic: 'Complex Duties',
-        question: "In discretionary trusts, what does the duty to act 'impartially' actually require?", 
+        question: "In discretionary trusts, what does the duty to act 'impartially' actually require?",
         options: [
           { text: "Equal distributions to all beneficiaries", correct: false },
           { text: "Proper consideration of discretion without predetermined bias", correct: true },
@@ -207,7 +196,7 @@ const AdaptiveAssessmentQuiz = () => {
       total: performanceTracker.total + 1,
       streak: newStreak,
       topics: {
-       ...performanceTracker.topics,
+      ...performanceTracker.topics,
         [question.topic]: {
           correct: (performanceTracker.topics[question.topic]?.correct |
 | 0) + (isCorrect? 1 : 0),
@@ -247,7 +236,7 @@ const AdaptiveAssessmentQuiz = () => {
 
   const resetQuiz = () => {
     setCurrentQuestion(0);
-    setAnswers();
+    setAnswers(); // Corrected: Initialise as empty array
     setScore(0);
     setDifficulty('basic');
     setQuizComplete(false);
@@ -273,7 +262,7 @@ const AdaptiveAssessmentQuiz = () => {
   const getPerformanceLevel = () => {
     // Avoid division by zero if no questions attempted yet
     if (performanceTracker.total === 0) {
-        return { level: 'Start the Quiz.', color: 'text-gray-600', icon: <Brain /> }; 
+        return { level: 'Start the Quiz.', color: 'text-gray-600', icon: <Brain /> };
     }
     const percentage = (performanceTracker.correct / performanceTracker.total) * 100;
     if (percentage >= 90) return { level: 'Excellent', color: 'text-green-600', icon: <Award /> };
@@ -290,7 +279,7 @@ const AdaptiveAssessmentQuiz = () => {
         <div className="text-center mb-6">
           <div className="flex items-center justify-center mb-4">
             {performance.icon}
-            <h1 className="text-3xl font-bold ml-3">Quiz complete.</h1> 
+            <h1 className="text-3xl font-bold ml-3">Quiz complete.</h1>
           </div>
           <div className={`text-2xl font-semibold ${performance.color}`}>
             {performance.level}
@@ -336,12 +325,12 @@ const AdaptiveAssessmentQuiz = () => {
         </div>
 
         <div className="space-y-4 mb-6">
-          <h3 className="text-lg font-semibold">Review your answers.</h3> 
+          <h3 className="text-lg font-semibold">Review your answers.</h3>
           {answers.map((answer, index) => (
             <div key={index} className="border rounded-lg p-4">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
-                  <div className="font-medium" dangerouslySetInnerHTML={{ __html: answer.questionText }}></div> {/* Use dangerouslySetInnerHTML for <em> tags */}
+                  <div className="font-medium" dangerouslySetInnerHTML={{ __html: answer.questionText }}></div>
                   <div className="text-sm text-gray-600 mt-1">
                     Topic: {answer.topic} | Difficulty: {answer.difficulty}
                   </div>
@@ -368,7 +357,7 @@ const AdaptiveAssessmentQuiz = () => {
             onClick={resetQuiz}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            Take quiz again. 
+            Take quiz again.
           </button>
         </div>
       </div>
@@ -425,7 +414,6 @@ const AdaptiveAssessmentQuiz = () => {
       <div className="bg-white border rounded-lg p-6">
         <div className="mb-4">
           <span className="text-sm text-purple-600 font-medium">{question.topic}</span>
-          {/* Using dangerouslySetInnerHTML to render <em> tags */}
           <h3 className="text-xl font-semibold mt-2" dangerouslySetInnerHTML={{ __html: question.question }}></h3>
         </div>
 
@@ -437,10 +425,10 @@ const AdaptiveAssessmentQuiz = () => {
               disabled={showExplanation}
               className={`w-full p-4 text-left border rounded-lg transition-colors ${
                 showExplanation
-                 ? option.correct
-                   ? 'border-green-500 bg-green-50'
+                ? option.correct
+                  ? 'border-green-500 bg-green-50'
                     : selectedAnswer === index
-                   ? 'border-red-500 bg-red-50'
+                  ? 'border-red-500 bg-red-50'
                     : 'border-gray-300 bg-gray-50'
                   : 'border-gray-300 hover:border-blue-300 hover:bg-blue-50'
               } ${showExplanation? 'cursor-not-allowed' : 'cursor-pointer'}`}
@@ -481,7 +469,7 @@ const AdaptiveAssessmentQuiz = () => {
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
               {/* Change button text for clarity when quiz might continue looping */}
-              {performanceTracker.total < 15? 'Next question' : 'Review results / next section'} 
+              {performanceTracker.total < 15? 'Next question' : 'Review results / next section'}
             </button>
           </div>
         )}
@@ -490,10 +478,10 @@ const AdaptiveAssessmentQuiz = () => {
       <div className="mt-6 bg-gray-50 p-4 rounded-lg">
         <h4 className="font-semibold mb-2">How adaptive learning works:</h4>
         <div className="text-sm text-gray-600 space-y-1">
-          <div>• Questions adapt based on your performance – answer correctly to unlock harder questions.</div> 
-          <div>• Your streak affects difficulty adjustments (two or more correct moves up, two or more wrong moves down).</div> 
-          <div>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis).</div> 
-          <div>• The quiz continues until you have attempted at least 15 questions, or you complete all questions in the advanced difficulty.</div> 
+          <div>• Questions adapt based on your performance – answer correctly to unlock harder questions.</div>
+          <div>• Your streak affects difficulty adjustments (two or more correct moves up, two or more wrong moves down).</div>
+          <div>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis).</div>
+          <div>• The quiz continues until you have attempted at least 15 questions, or you complete all questions in the advanced difficulty.</div>
         </div>
       </div>
     </div>
