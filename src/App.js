@@ -1,18 +1,22 @@
-import React from 'react';
-import './App.css'; 
+// src/App.js
 
-import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; 
-import BreachTrustAnalyser from './components/BreachTrustAnalyser'; 
-import CaseStudySimulator from './components/CaseStudySimulator'; 
-import InteractiveDutyChecker from './components/InteractiveDutyChecker'; 
-import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; 
-import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; 
+import React from 'react';
+import './App.css'; // Keep your main CSS file
+
+// Import all your components from the 'components' folder (using LOWERCASE 'components' to match local disk)
+import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; // Corrected to lowercase 'components'
+import BreachTrustAnalyser from './components/BreachTrustAnalyser'; // Corrected to lowercase 'components'
+import CaseStudySimulator from './components/CaseStudySimulator'; // Corrected to lowercase 'components'
+import InteractiveDutyChecker from './components/InteractiveDutyChecker'; // Corrected to lowercase 'components'
+import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; // Corrected to lowercase 'components'
+import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; // Corrected to lowercase 'components'
 
 
 function App() {
   return (
+    // Tailwind CSS classes for a responsive and centered layout
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
-   
+      {/* Header and Navigation */}
       <header className="w-full max-w-4xl bg-blue-700 text-white p-4 rounded-lg shadow-md mb-8">
         <h1 className="text-3xl font-bold text-center mb-2">
           Trusts Law Educational Tools
@@ -39,9 +43,9 @@ function App() {
         </nav>
       </header>
 
-
+      {/* Main Content Area for Tools */}
       <main className="w-full max-w-4xl flex flex-col gap-8">
-
+        {/* Adaptive Assessment Quiz Section */}
         <section id="adaptive-assessment-quiz" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Adaptive Assessment Quiz
@@ -54,7 +58,7 @@ function App() {
           </div>
         </section>
 
-
+        {/* Breach Trust Analyser Section */}
         <section id="breach-trust-analyser" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Breach of Trust Analyser
@@ -67,18 +71,20 @@ function App() {
           </div>
         </section>
 
+        {/* Case Study Simulator Section */}
         <section id="case-study-simulator" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Case Study Simulator
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Practise applying trusts law principles to realistic case studies.
+            Practise applying trusts law principles to case studies.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <CaseStudySimulator />
           </div>
         </section>
 
+        {/* Interactive Duty Checker Section */}
         <section id="interactive-duty-checker" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Interactive Duty Checker
@@ -91,6 +97,7 @@ function App() {
           </div>
         </section>
 
+        {/* Jurisdiction Comparison Tool Section */}
         <section id="jurisdiction-comparison-tool" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Jurisdiction Comparison Tool
@@ -103,6 +110,7 @@ function App() {
           </div>
         </section>
 
+        {/* Power Authorisation Checker Section */}
         <section id="power-authorisation-checker" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Power and Authorisation Checker
@@ -117,6 +125,7 @@ function App() {
 
       </main>
 
+      {/* Footer (Optional) */}
       <footer className="mt-8 text-center text-gray-600 text-sm">
         <p>&copy; 2025 Trusts Law Educational Tools. All rights reserved.</p>
       </footer>
