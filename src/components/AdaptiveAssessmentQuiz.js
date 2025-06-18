@@ -164,8 +164,8 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const getCurrentQuestionData = () => {
-    const allQuestions = getAllQuestions();
-    return allQuestions[currentQuestion] || null;
+    const currentDifficultyQuestions = getQuestionsByDifficulty(difficulty);
+    return currentDifficultyQuestions[currentQuestion] || null;
   };
 
   const handleAnswer = (selectedOption) => {
@@ -217,13 +217,25 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const nextQuestion = () => {
-    const allQuestions = getAllQuestions();
-    if (currentQuestion < allQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+    // Allow the quiz to continue indefinitely by looping back to question 0
+    // but only if the total questions attempted is less than a certain threshold
+    const currentDifficultyQuestions = getQuestionsByDifficulty(difficulty);
+    if (currentQuestion < currentDifficultyQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
       setFeedback(null);
     } else {
-      setQuizComplete(true);
-      setShowResults(true);
+      // If we've exhausted questions in the current difficulty,
+      // reset currentQuestion to 0 for that difficulty.
+      setCurrentQuestion(0); // Loop back to the start of the current difficulty's questions
+      setFeedback(null);
+
+      // We might want to end the quiz after a certain number of questions are answered overall,
+      // or after cycling through all difficulties a few times.
+      const totalAnswered = Object.keys(answers).length;
+      if (totalAnswered >= 15 && difficulty === 'advanced') { // Example: end after 15 questions if in advanced difficulty
+        setQuizComplete(true);
+        setShowResults(true);
+      }
     }
   };
 
@@ -254,6 +266,12 @@ const AdaptiveAssessmentQuiz = () => {
   };
 
   const getPerformanceLevel = () => {
+    // Avoid division by zero if no questions attempted yet
+    const totalAnswered = Object.keys(answers).length;
+    if (totalAnswered === 0) {
+      return { level: 'Start the Quiz!', color: 'text-gray-600', icon: <Brain className="w-6 h-6" /> };
+    }
+    
     const percentage = getScorePercentage();
     if (percentage >= 80) return { level: 'Excellent', color: 'text-green-600', icon: <Trophy className="w-6 h-6" /> };
     if (percentage >= 70) return { level: 'Good', color: 'text-blue-600', icon: <Target className="w-6 h-6" /> };
@@ -272,8 +290,8 @@ const AdaptiveAssessmentQuiz = () => {
 
     return (
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <div className="text-centre mb-6">
-          <h1 className="text-3xl font-bold mb-2 flex items-centre justify-centre">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-2 flex items-center justify-center">
             <Trophy className="w-8 h-8 mr-3 text-yellow-600" />
             Quiz Results
           </h1>
@@ -281,17 +299,17 @@ const AdaptiveAssessmentQuiz = () => {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg mb-6">
-          <div className="text-centre mb-4">
+          <div className="text-center mb-4">
             <div className={`text-4xl font-bold mb-2 ${performance.color}`}>
               {getScorePercentage()}%
             </div>
-            <div className={`flex items-centre justify-centre ${performance.color}`}>
+            <div className={`flex items-center justify-center ${performance.color}`}>
               {performance.icon}
               <span className="ml-2 text-xl font-semibold">{performance.level}</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-centre">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div className="bg-white p-4 rounded border">
               <div className="text-2xl font-bold text-blue-600">{correctAnswers}</div>
               <div className="text-sm text-gray-600">Correct answers</div>
@@ -304,6 +322,68 @@ const AdaptiveAssessmentQuiz = () => {
               <div className="text-2xl font-bold text-green-600">{answeredQuestions.length}</div>
               <div className="text-sm text-gray-600">Questions completed</div>
             </div>
+          </div>
+        </div>
+
+        {/* Review individual answers */}
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-4">Review your answers</h3>
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            {Object.values(answers).map((answer, index) => (
+              <div key={index} className="border rounded-lg p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <div className="font-medium" dangerouslySetInnerHTML={{ __html: answer.questionData.question }}></div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Topic: {answer.questionData.area} | Difficulty: {answer.questionData.difficulty}
+                    </div>
+                  </div>
+                  {answer.correct ? (
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                  )}
+                </div>
+                <div className="text-sm">
+                  <span className="font-medium">Your answer:</span> {answer.questionData.options[answer.selected]}
+                </div>
+                {!answer.correct && (
+                  <div className="text-sm text-green-700 mt-1">
+                    <span className="font-medium">Correct answer:</span> {answer.questionData.options[answer.questionData.correct]}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-4">Performance by area</h3>
+          <div className="space-y-3">
+            {['Statutory duties', 'Record keeping', 'Duty of care', 'Information disclosure', 'Delegation powers', 'Conflict of interest', 'Trustee powers', 'Judicial relief', 'Exclusion clauses'].map(area => {
+              const areaQuestions = answeredQuestions.filter(a => a.questionData.area === area);
+              const areaCorrect = areaQuestions.filter(a => a.correct).length;
+              const areaTotal = areaQuestions.length;
+              
+              if (areaTotal === 0) return null;
+              
+              const areaPercentage = Math.round((areaCorrect / areaTotal) * 100);
+              
+              return (
+                <div key={area} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                  <span className="font-medium">{area}</span>
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-600 mr-3">{areaCorrect}/{areaTotal}</span>
+                    <div className="w-20 bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full" 
+                        style={{ width: `${areaPercentage}%` }}
+                      ></div>
+                    </div>
+                    <span className="ml-2 text-sm font-medium w-12">{areaPercentage}%</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -327,7 +407,10 @@ const AdaptiveAssessmentQuiz = () => {
                     <span className="text-sm text-gray-600 mr-3">{areaCorrect}/{areaTotal}</span>
                     <div className="w-20 bg-gray-200 rounded-full h-2">
                       <div 
-                        className="bg-blue-600 h-2 rounded-full" 
+                        className={`h-2 rounded-full ${
+                          areaPercentage >= 80 ? 'bg-green-500' :
+                          areaPercentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
                         style={{ width: `${areaPercentage}%` }}
                       ></div>
                     </div>
@@ -336,6 +419,35 @@ const AdaptiveAssessmentQuiz = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+        <div className="mb-6 bg-blue-50 p-6 rounded-lg">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+            Study recommendations
+          </h3>
+          <div className="space-y-2 text-sm">
+            {performance.level === 'Needs Improvement' && (
+              <>
+                <p>• Review fundamental trust concepts and the *Trusts Act 2025* (Qld) provisions</p>
+                <p>• Focus on understanding non-excludable duties under sections 64-70</p>
+                <p>• Study the differences between professional and individual trustee standards</p>
+              </>
+            )}
+            {performance.level === 'Satisfactory' && (
+              <>
+                <p>• Strengthen understanding of advanced topics like judicial relief provisions</p>
+                <p>• Review case law interactions with statutory reforms</p>
+                <p>• Practice application of legal principles to complex scenarios</p>
+              </>
+            )}
+            {(performance.level === 'Good' || performance.level === 'Excellent') && (
+              <>
+                <p>• Excellent work! Consider exploring comparative jurisdictional approaches</p>
+                <p>• Review recent case law developments and academic commentary</p>
+                <p>• Focus on practical application in professional trustee contexts</p>
+              </>
+            )}
           </div>
         </div>
 
@@ -369,8 +481,7 @@ const AdaptiveAssessmentQuiz = () => {
             )}
           </div>
         </div>
-
-        <div className="text-centre">
+        <div className="text-center">
           <button
             onClick={resetQuiz}
             className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -395,7 +506,7 @@ const AdaptiveAssessmentQuiz = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2 flex items-centre">
+        <h1 className="text-3xl font-bold mb-2 flex items-center">
           <Brain className="w-8 h-8 mr-3 text-purple-600" />
           Adaptive Trust Law Assessment
         </h1>
@@ -404,21 +515,21 @@ const AdaptiveAssessmentQuiz = () => {
 
       {/* Progress indicator */}
       <div className="mb-6">
-        <div className="flex items-centre justify-between mb-2">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium">Progress</span>
           <span className="text-sm text-gray-600">
-            Question {currentQuestion + 1} of {allQuestions.length}
+            Question {currentQuestion + 1} of {getQuestionsByDifficulty(difficulty).length} ({difficulty})
           </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div 
             className="bg-purple-600 h-2 rounded-full transition-all duration-300" 
-            style={{ width: `${((currentQuestion + 1) / allQuestions.length) * 100}%` }}
+            style={{ width: `${((currentQuestion + 1) / getQuestionsByDifficulty(difficulty).length) * 100}%` }}
           ></div>
         </div>
-        <div className="flex items-centre justify-between mt-2 text-xs text-gray-500">
+        <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
           <span>Current difficulty: <span className="font-medium capitalize">{difficulty}</span></span>
-          <span>Score: <span className="font-medium">{score} points</span></span>
+          <span>Score: <span className="font-medium">{score} points</span> | Total answered: {Object.keys(answers).length}</span>
         </div>
       </div>
 
@@ -426,7 +537,7 @@ const AdaptiveAssessmentQuiz = () => {
         <div className="space-y-6">
           {/* Question */}
           <div className="bg-gray-50 p-6 rounded-lg">
-            <div className="flex items-centre justify-between mb-4">
+            <div className="flex items-center justify-between mb-4">
               <span className={`px-3 py-1 rounded-full text-sm ${
                 questionData.difficulty === 'advanced' ? 'bg-red-100 text-red-800' :
                 questionData.difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-800' :
@@ -436,7 +547,7 @@ const AdaptiveAssessmentQuiz = () => {
               </span>
               <span className="text-sm text-gray-600">{questionData.area}</span>
             </div>
-            <h2 className="text-xl font-semibold mb-4">{questionData.question}</h2>
+            <h2 className="text-xl font-semibold mb-4" dangerouslySetInnerHTML={{ __html: questionData.question }}></h2>
             
             <div className="space-y-3">
               {questionData.options.map((option, index) => (
@@ -454,8 +565,8 @@ const AdaptiveAssessmentQuiz = () => {
                       : 'border-gray-300 hover:border-purple-500 hover:bg-purple-50'
                   }`}
                 >
-                  <div className="flex items-centre">
-                    <span className="w-6 h-6 rounded-full border-2 mr-3 flex items-centre justify-centre text-sm font-medium">
+                  <div className="flex items-center">
+                    <span className="w-6 h-6 rounded-full border-2 mr-3 flex items-center justify-center text-sm font-medium">
                       {String.fromCharCode(65 + index)}
                     </span>
                     <span>{option}</span>
@@ -476,7 +587,7 @@ const AdaptiveAssessmentQuiz = () => {
             <div className={`p-6 rounded-lg border-l-4 ${
               feedback.isCorrect ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50'
             }`}>
-              <div className="flex items-centre mb-3">
+              <div className="flex items-center mb-3">
                 {feedback.isCorrect ? (
                   <CheckCircle className="w-6 h-6 text-green-600 mr-2" />
                 ) : (
@@ -506,11 +617,11 @@ const AdaptiveAssessmentQuiz = () => {
           )}
 
           {/* Navigation */}
-          <div className="flex items-centre justify-between">
+          <div className="flex items-center justify-between">
             <button
               onClick={previousQuestion}
               disabled={currentQuestion === 0}
-              className="flex items-centre px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Previous
@@ -519,9 +630,10 @@ const AdaptiveAssessmentQuiz = () => {
             {hasAnswered && (
               <button
                 onClick={nextQuestion}
-                className="flex items-centre px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                className="flex items-center px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
               >
-                {currentQuestion === allQuestions.length - 1 ? 'Finish quiz' : 'Next question'}
+                {/* Change button text for clarity when quiz might continue looping */}
+                {Object.keys(answers).length < 15 ? 'Next Question' : 'Review Results / Next Section'}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
             )}
@@ -536,10 +648,10 @@ const AdaptiveAssessmentQuiz = () => {
           <div>
             <h4 className="font-medium text-blue-700 mb-2">Adaptive difficulty</h4>
             <ul className="space-y-1">
-              <li>• Quiz adjusts difficulty based on your performance</li>
-              <li>• Correct answers increase difficulty level</li>
-              <li>• Incorrect answers provide easier questions</li>
-              <li>• Balanced assessment across all knowledge areas</li>
+              <li>• Questions adapt based on your performance - answer correctly to unlock harder questions</li>
+              <li>• Your streak affects difficulty adjustments (2+ correct moves up, 2+ wrong moves down)</li>
+              <li>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis)</li>
+              <li>• Quiz continues until you've attempted at least 15 questions, or you complete all questions in the advanced difficulty</li>
             </ul>
           </div>
           <div>
