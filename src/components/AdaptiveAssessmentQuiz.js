@@ -1,491 +1,455 @@
-// src/components/AdaptiveAssessmentQuiz.js
-
+// src/components/BreachTrustAnalyser.js
 import { useState, useEffect } from 'react';
-import { Brain, Target, TrendingUp, Award, RotateCcw, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { AlertTriangle, Shield, Scale, Target, CheckCircle, XCircle, Info, Gavel } from 'lucide-react';
 
-const AdaptiveAssessmentQuiz = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState();
-  const = useState(0);
-  const = useState('basic'); // basic, intermediate, advanced
-  const [quizComplete, setQuizComplete] = useState(false);
-  const = useState(null);
-  const = useState(false);
-  const = useState({
-    correct: 0,
-    total: 0,
-    streak: 0,
-    topics: {}
-  });
+const BreachTrustAnalyser = () => {
+  const = useState('');
+  const [jurisdiction, setJurisdiction] = useState('');
+  const = useState('');
+  const [circumstances, setCircumstances] = useState('');
+  const [analysis, setAnalysis] = useState(null);
 
-  const questionBank = {
-    basic:,
-        explanation: "The right of indemnification and reimbursement is the most crucial protection, allowing trustees to recover properly incurred expenses from trust assets.",
-        difficulty: 'basic',
-        qld2025Note: "Section 155 strengthens this right in *Trusts Act 2025* (Qld)."
-      },
-      {
-        id: 'b2',
-        topic: 'Trust Types',
-        question: "In a discretionary trust, what does 'discretionary' refer to?",
-        options:,
-        explanation: "Discretionary trusts give trustees discretion over which beneficiaries receive distributions and how much they receive.",
-        difficulty: 'basic'
-      },
-      {
-        id: 'b3',
-        topic: 'Duties',
-        question: "Which is NOT a traditional trustee duty?",
-        options: [
-          { text: "Follow trust terms exactly", correct: false },
-          { text: "Act impartially among beneficiaries", correct: false },
-          { text: "Guarantee investment returns", correct: true },
-          { text: "Keep proper accounts", correct: false }
-        ],
-        explanation: "Trustees cannot guarantee investment returns – they must invest prudently but are not liable for market losses if acting properly.",
-        difficulty: 'basic'
-      },
-      {
-        id: 'b4',
-        topic: 'Queensland 2025',
-        question: "What is the main innovation of Queensland <em>Trusts Act 2025</em> (Qld)?",
-        options: [
-          { text: "Allows unlimited fees", correct: false },
-          { text: "Eliminates all trustee duties", correct: false },
-          { text: "Creates non-excludable core duties", correct: true },
-          { text: "Permits gambling with trust funds", correct: false }
-        ],
-        explanation: "The *Trusts Act 2025* (Qld) introduces core duties that cannot be excluded by trust deeds, providing minimum beneficiary protection.",
-        difficulty: 'basic',
-        qld2025Note: "Sections 64–70 establish these non-excludable duties including honesty, care, records, and information disclosure."
-      }
-    ],
-    intermediate:,
-        explanation: "Section 65 requires professional trustees to meet the standard of care expected in their profession, business, or employment.",
-        difficulty: 'intermediate',
-        qld2025Note: "This creates a tiered system: professional (Section 65), knowledgeable (Section 66), and ordinary (Section 67) trustees."
-      },
-      {
-        id: 'i2',
-        topic: 'Information Rights',
-        question: "Under *Schmidt v Rosewood Trust Ltd*, what determines beneficiary information rights?",
-        options: [
-          { text: "Only fixed beneficial interests give information rights", correct: false },
-          { text: "All beneficiaries have identical information rights", correct: false },
-          { text: "Court discretion based on nature of interest and relevance", correct: true },
-          { text: "Only trustees can decide what information to provide", correct: false }
-        ],
-        explanation: "*Schmidt* established that information rights depend on court discretion, considering the beneficiary’s interest and the relevance of information sought.",
-        difficulty: 'intermediate'
-      },
-      {
-        id: 'i3',
-        topic: 'Investment Powers',
-        question: "What is the 'prudent person' test for trustee investments?",
-        options:,
-        explanation: "The prudent person test requires trustees to invest with the care, skill, and caution that a prudent person would exercise in similar circumstances.",
-        difficulty: 'intermediate'
-      },
-      {
-        id: 'i4',
-        topic: 'Delegation',
-        question: "Under Queensland <em>Trusts Act 2025</em> (Qld), what are the new delegation powers?",
-        options:,
-        explanation: "Sections 72–73 allow delegation of investment and administrative functions (maximum 12 months) but trustees must maintain oversight.",
-        difficulty: 'intermediate',
-        qld2025Note: "This represents a significant expansion from the restrictive approach in the *Trusts Act 1973* (Qld)."
-      }
-    ],
-    advanced:,
-        explanation: "Section 197 of the *Corporations Act 2001* (Cth) creates director liability when the corporate trustee cannot pay its debts and is not entitled to full indemnity due to breach of trust, acting outside powers, or deed limitations.",
-        difficulty: 'advanced'
-      },
-      {
-        id: 'a2',
-        topic: 'Complex Duties',
-        question: "In discretionary trusts, what does the duty to act 'impartially' actually require?",
-        options: [
-          { text: "Equal distributions to all beneficiaries", correct: false },
-          { text: "Proper consideration of discretion without predetermined bias", correct: true },
-          { text: "Consulting all beneficiaries before decisions", correct: false },
-          { text: "Following beneficiaries' majority vote", correct: false }
-        ],
-        explanation: "For discretionary trusts, impartiality means giving real and genuine consideration to the exercise of discretion, not equal treatment.",
-        difficulty: 'advanced'
-      },
-      {
-        id: 'a3',
-        topic: 'Judicial Oversight',
-        question: "When will courts review trustees' discretionary decisions?",
-        options: [
-          { text: "Whenever beneficiaries request review", correct: false },
-          { text: "Only for bad faith, improper considerations, or failure to exercise discretion", correct: true },
-          { text: "For any decision beneficiaries consider unfair", correct: false },
-          { text: "Courts cannot review discretionary decisions", correct: false }
-        ],
-        explanation: "Courts will only intervene in discretionary decisions for bad faith, taking improper considerations into account, or failure to genuinely exercise discretion.",
-        difficulty: 'advanced'
-      },
-      {
-        id: 'a4',
-        topic: 'Queensland 2025 Implications',
-        question: "How does the 'all powers of absolute owner' approach in <em>Trusts Act 2025</em> (Qld) change trustee liability?",
-        options: [
-          { text: "Eliminates all trustee liability", correct: false },
-          { text: "Increases powers but maintains enhanced duty obligations", correct: true },
-          { text: "Creates unlimited trustee discretion", correct: false },
-          { text: "Only applies to professional trustees", correct: false }
-        ],
-        explanation: "While granting broader powers, the Act simultaneously imposes non-excludable duties, creating a balance of enhanced authority with mandatory responsibilities.",
-        difficulty: 'advanced',
-        qld2025Note: "This revolutionary approach moves from restrictive enumerated powers to general authority subject to strengthened duties."
-      }
-    ]
-  };
+  const breachTypes =;
 
-  const getCurrentQuestions = () => {
-    return questionBank[difficulty] |
-| questionBank.basic;
-  };
+  const analyseBreach = () => {
+    if (!selectedBreach ||!jurisdiction ||!trusteeType) return;
 
-  const adaptDifficulty = (correct, currentDifficulty, streak) => {
-    if (correct && streak >= 2 && currentDifficulty === 'basic') {
-      return 'intermediate';
-    }
-    if (correct && streak >= 3 && currentDifficulty === 'intermediate') {
-      return 'advanced';
-    }
-    if (!correct && streak <= -2 && currentDifficulty === 'advanced') {
-      return 'intermediate';
-    }
-    if (!correct && streak <= -2 && currentDifficulty === 'intermediate') {
-      return 'basic';
-    }
-    return currentDifficulty;
-  };
+    const breach = breachTypes.find(b => b.id === selectedBreach);
+    let severity = breach.severity;
+    let consequences =;
+    let defences =;
+    let remedies =;
+    let liability = 'potential';
 
-  const handleAnswer = (optionIndex) => {
-    setSelectedAnswer(optionIndex);
-    setShowExplanation(true);
+    // Base analysis for breach type
+    switch (selectedBreach) {
+      case 'self_dealing':
+        consequences.push('Transaction potentially voidable at beneficiary election.');
+        consequences.push('Personal liability for any loss to trust.');
+        consequences.push('Potential profit disgorgement.');
+        defences.push('Full disclosure and beneficiary consent obtained.');
+        defences.push('Independent valuation showing fair price.');
+        defences.push('Transaction clearly for trust benefit.');
+        remedies.push('Rescission of transaction.');
+        remedies.push('Account for profits made.');
+        remedies.push('Compensation for loss.');
+        liability = 'high';
+        break;
 
-    const questions = getCurrentQuestions();
-    const question = questions[currentQuestion];
-    const isCorrect = question.options[optionIndex].correct;
+      case 'investment_loss':
+        consequences.push('Personal liability if investment was imprudent.');
+        consequences.push('Breach of duty of care.');
+        defences.push('Investment was within trustee\'s powers.');
+        defences.push('Proper professional advice obtained.');
+        defences.push('Investment reasonable at time made (not hindsight).');
+        defences.push('Part of properly diversified portfolio.');
+        remedies.push('Compensation for losses caused by breach.');
+        remedies.push('Court may excuse if honest and reasonable.');
+        liability = 'medium';
+        break;
 
-    const newAnswer = {
-      questionId: question.id,
-      questionText: question.question,
-      selectedOption: question.options[optionIndex].text,
-      correct: isCorrect,
-      explanation: question.explanation,
-      topic: question.topic,
-      difficulty: difficulty
-    };
+      case 'unauthorised_distribution':
+        consequences.push('Personal liability to replace trust funds.');
+        consequences.push('Potential breach of fiduciary duties.');
+        defences.push('Distribution authorised by trust deed.');
+        defences.push('Proper exercise of discretion.');
+        defences.push('Beneficiary was entitled to receive distribution.');
+        remedies.push('Recovery of distributed funds.');
+        remedies.push('Personal reimbursement to trust.');
+        liability = 'high';
+        break;
 
-    setAnswers([...answers, newAnswer]);
-
-    const newScore = isCorrect? score + 1 : score;
-    setScore(newScore);
-
-    const newStreak = isCorrect?
-      (performanceTracker.streak >= 0? performanceTracker.streak + 1 : 1) :
-      (performanceTracker.streak <= 0? performanceTracker.streak - 1 : -1);
-
-    const updatedTracker = {
-      correct: performanceTracker.correct + (isCorrect? 1 : 0),
-      total: performanceTracker.total + 1,
-      streak: newStreak,
-      topics: {
-       ...performanceTracker.topics,
-        [question.topic]: {
-          correct: (performanceTracker.topics[question.topic]?.correct |
-| 0) + (isCorrect? 1 : 0),
-          total: (performanceTracker.topics[question.topic]?.total |
-| 0) + 1
+      case 'information_refusal':
+        if (jurisdiction === 'qld2025') {
+          consequences.push('Breach of statutory non-excludable duty (Section 70).');
+          consequences.push('Potential court order to provide information.');
+          severity = 'medium'; // Higher in QLD 2025
+        } else {
+          consequences.push('Breach of equitable duty to account.');
         }
-      }
-    };
-
-    setPerformanceTracker(updatedTracker);
-
-    // Adapt difficulty for next question
-    const newDifficulty = adaptDifficulty(isCorrect, difficulty, newStreak);
-    if (newDifficulty!== difficulty) {
-      setDifficulty(newDifficulty);
+        defences.push('Information genuinely confidential.');
+        defences.push('Disclosure would harm trust interests.');
+        defences.push('Beneficiary has no legitimate interest in information.');
+        remedies.push('Court order for disclosure.');
+        remedies.push('Potential cost orders.');
+        liability = 'low';
+        break;
     }
-  };
 
-  const nextQuestion = () => {
-    const questions = getCurrentQuestions();
-    const currentDifficultyQuestions = questionBank[difficulty];
-    if (currentQuestion < currentDifficultyQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setCurrentQuestion(0); // Loop back to the start of the current difficulty's questions
-      setSelectedAnswer(null);
-      setShowExplanation(false);
+    // Jurisdiction-specific analysis
+    if (jurisdiction === 'qld2025') {
+      if (['self_dealing', 'investment_loss', 'record_keeping', 'information_refusal'].includes(selectedBreach)) {
+        consequences.push('Potential breach of non-excludable statutory duties.');
+        defences.push('Section 160 court relief if acted honestly and reasonably.');
+      }
 
-      if (performanceTracker.total >= 15 && difficulty === 'advanced') {
-        setQuizComplete(true);
+      if (trusteeType === 'professional') {
+        consequences.push('Higher professional standard applies (Section 65).');
+        severity = severity === 'low'? 'medium' : severity === 'medium'? 'high' : severity;
       }
     }
-  };
 
+    // Trustee type considerations
+    if (trusteeType === 'professional') {
+      consequences.push('Enhanced professional liability standards.');
+      consequences.push('Potential regulatory action.');
+      defences.push('Acted in accordance with professional standards.');
+    }
 
-  const resetQuiz = () => {
-    setCurrentQuestion(0);
-    setAnswers();
-    setScore(0);
-    setDifficulty('basic');
-    setQuizComplete(false);
-    setSelectedAnswer(null);
-    setShowExplanation(false);
-    setPerformanceTracker({
-      correct: 0,
-      total: 0,
-      streak: 0,
-      topics: {}
+    if (trusteeType === 'corporate') {
+      consequences.push('Potential director liability under s 197 *Corporations Act 2001* (Cth).');
+      defences.push('Directors acted with proper corporate authority.');
+    }
+
+    // Circumstance considerations
+    if (circumstances.toLowerCase().includes('honest mistake')) {
+      defences.push('Honest and reasonable mistake.');
+      remedies.push('Court discretion to excuse under relief provisions.');
+    }
+
+    if (circumstances.toLowerCase().includes('beneficiary consent')) {
+      defences.push('Beneficiary knowledge and consent.');
+      liability = liability === 'high'? 'medium' : liability === 'medium'? 'low' : liability;
+    }
+
+    setAnalysis({
+      breach,
+      severity,
+      consequences,
+      defences,
+      remedies,
+      liability
     });
   };
 
-  const getDifficultyColor = (diff) => {
-    switch (diff) {
-      case 'basic': return 'bg-green-100 text-green-800';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800';
-      case 'advanced': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+  const reset = () => {
+    setSelectedBreach('');
+    setJurisdiction('');
+    setTrusteeType('');
+    setCircumstances('');
+    setAnalysis(null);
+  };
+
+  const getSeverityColor = (severity) => {
+    switch (severity) {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-green-100 text-green-800 border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  const getPerformanceLevel = () => {
-    // Avoid division by zero if no questions attempted yet
-    if (performanceTracker.total === 0) {
-        return { level: 'Start the Quiz.', color: 'text-gray-600', icon: <Brain /> };
+  const getLiabilityColor = (liability) => {
+    switch (liability) {
+      case 'high': return 'text-red-600';
+      case 'medium': return 'text-yellow-600';
+      case 'low': return 'text-green-600';
+      default: return 'text-gray-600';
     }
-    const percentage = (performanceTracker.correct / performanceTracker.total) * 100;
-    if (percentage >= 90) return { level: 'Excellent', color: 'text-green-600', icon: <Award /> };
-    if (percentage >= 75) return { level: 'Good', color: 'text-blue-600', icon: <Target /> };
-    if (percentage >= 60) return { level: 'Satisfactory', color: 'text-yellow-600', icon: <TrendingUp /> };
-    return { level: 'Needs Improvement', color: 'text-red-600', icon: <AlertCircle /> };
   };
 
-  if (quizComplete) {
-    const performance = getPerformanceLevel();
+  const getLiabilityIcon = (liability) => {
+    switch (liability) {
+      case 'high': return <XCircle className="w-6 h-6 text-red-600" />;
+      case 'medium': return <AlertTriangle className="w-6 h-6 text-yellow-600" />;
+      case 'low': return <CheckCircle className="w-6 h-6 text-green-600" />;
+      default: return <Scale className="w-6 h-6 text-gray-600" />;
+    }
+  };
 
-    return (
-      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center mb-4">
-            {performance.icon}
-            <h1 className="text-3xl font-bold ml-3">Quiz complete.</h1>
-          </div>
-          <div className={`text-2xl font-semibold ${performance.color}`}>
-            {performance.level}
-          </div>
-          <div className="text-gray-600 mt-2">
-            Score: {performanceTracker.correct}/{performanceTracker.total} ({Math.round((performanceTracker.correct/performanceTracker.total)*100)}%)
-          </div>
-        </div>
+  const getLiabilityText = (liability) => {
+    switch (liability) {
+      case 'high': return 'High liability risk';
+      case 'medium': return 'Moderate liability risk';
+      case 'low': return 'Low liability risk';
+      default: return 'Liability uncertain';
+    }
+  };
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-lg font-semibold mb-4">Performance by Topic</h3>
-            <div className="space-y-3">
-              {Object.entries(performanceTracker.topics).map(([topic, stats]) => (
-                <div key={topic} className="flex items-center justify-between">
-                  <span className="text-sm">{topic}</span>
-                  <div className="flex items-center">
-                    <span className="text-sm mr-2">{stats.correct}/{stats.total}</span>
-                    <div className="w-20 bg-gray-200 rounded-full h-2">
-                      <div
-                        className={`h-2 rounded-full ${
-                          (stats.correct/stats.total) >= 0.8? 'bg-green-500' :
-                          (stats.correct/stats.total) >= 0.6? 'bg-yellow-500' : 'bg-red-500'
-                        }`}
-                        style={{ width: `${(stats.correct/stats.total)*100}%` }}
-                      ></div>
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2 flex items-center">
+          <AlertTriangle className="w-8 h-8 mr-3 text-red-600" />
+          Breach of Trust Analyser
+        </h1>
+        <p className="text-gray-600">Identify and analyse potential trustee breaches with legal consequences and defences.</p>
+      </div>
+
+      {!analysis? (
+        <div className="space-y-6">
+          {/* Breach Type Selection */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Type of potential breach:</label>
+            <select
+              value={selectedBreach}
+              onChange={(e) => setSelectedBreach(e.target.value)}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select a breach type...</option>
+              {breachTypes.map(breach => (
+                <option key={breach.id} value={breach.id}>
+                  {breach.title} – {breach.description}
+                </option>
+              ))}
+            </select>
+            {selectedBreach && (
+              <div className="mt-2 p-3 bg-gray-50 rounded border-l-4 border-red-500">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-medium">{breachTypes.find(b => b.id === selectedBreach)?.title}</div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Category: {breachTypes.find(b => b.id === selectedBreach)?.category}
                     </div>
                   </div>
+                  <span className={`px-3 py-1 rounded-full border text-sm ${getSeverityColor(breachTypes.find(b => b.id === selectedBreach)?.severity)}`}>
+                    {breachTypes.find(b => b.id === selectedBreach)?.severity.charAt(0).toUpperCase() + breachTypes.find(b => b.id === selectedBreach)?.severity.slice(1)} severity
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Jurisdiction */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Applicable law:</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={() => setJurisdiction('qld2025')}
+                className={`p-4 border rounded-lg text-left ${
+                  jurisdiction === 'qld2025'? 'border-green-500 bg-green-50' : 'border-gray-300'
+                }`}
+              >
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Non-excludable duties and enhanced protections.
+                </div>
+              </button>
+              <button
+                onClick={() => setJurisdiction('qld1973')}
+                className={`p-4 border rounded-lg text-left ${
+                  jurisdiction === 'qld1973'? 'border-orange-500 bg-orange-50' : 'border-gray-300'
+                }`}
+              >
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Traditional equitable principles.
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Trustee Type */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Trustee type:</label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {['individual', 'professional', 'corporate'].map(type => (
+                <button
+                  key={type}
+                  onClick={() => setTrusteeType(type)}
+                  className={`p-4 border rounded-lg text-left ${
+                    trusteeType === type? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                  }`}
+                >
+                  <div className="font-medium capitalize">{type} trustee</div>
+                  <div className="text-sm text-gray-600 mt-1">
+                    {type === 'individual' && 'Natural person, basic care standard.'}
+                    {type === 'professional' && 'Licensed entity, enhanced standards.'}
+                    {type === 'corporate' && 'Company trustee, director liability.'}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Circumstances */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Additional circumstances (optional):</label>
+            <textarea
+              value={circumstances}
+              onChange={(e) => setCircumstances(e.target.value)}
+              placeholder="Describe any relevant circumstances (e.g., honest mistake, beneficiary consent, professional advice obtained, emergency situation, etc.)."
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 h-24 resize-none"
+            />
+            <div className="text-xs text-gray-500 mt-1">
+              Include factors that might affect liability or available defences.
+            </div>
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={analyseBreach}
+              disabled={!selectedBreach ||!jurisdiction ||!trusteeType}
+              className="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              Analyse breach.
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Analysis Header */}
+          <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-red-500">
+            <h2 className="text-xl font-bold mb-2">Breach analysis: {analysis.breach.title}</h2>
+            <p className="text-gray-700 mb-4">{analysis.breach.description}</p>
+            <div className="flex items-center space-x-4 text-sm">
+              <span className="bg-red-100 px-3 py-1 rounded-full">
+                Category: {analysis.breach.category}
+              </span>
+              <span className={`px-3 py-1 rounded-full border ${getSeverityColor(analysis.severity)}`}>
+                {analysis.severity.charAt(0).toUpperCase() + analysis.severity.slice(1)} severity
+              </span>
+              <span className="bg-blue-100 px-3 py-1 rounded-full">
+                {jurisdiction === 'qld2025'? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</>}
+              </span>
+            </div>
+          </div>
+
+          {/* Liability Assessment */}
+          <div className={`p-6 rounded-lg border-2 ${
+            analysis.liability === 'high'? 'border-red-300 bg-red-50' :
+            analysis.liability === 'medium'? 'border-yellow-300 bg-yellow-50' :
+            'border-green-300 bg-green-50'
+          }`}>
+            <div className="flex items-center mb-4">
+              {getLiabilityIcon(analysis.liability)}
+              <div className="ml-3">
+                <div className={`text-xl font-bold ${getLiabilityColor(analysis.liability)}`}>
+                  {getLiabilityText(analysis.liability)}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Based on breach type, jurisdiction, and circumstances.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Consequences */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <XCircle className="w-5 h-5 mr-2 text-red-600" />
+              Potential consequences
+            </h3>
+            <div className="space-y-2">
+              {analysis.consequences.map((consequence, index) => (
+                <div key={index} className="flex items-start p-3 bg-red-50 rounded border-l-4 border-red-400">
+                  <AlertTriangle className="w-4 h-4 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{consequence}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-blue-50 p-6 rounded-lg">
-            <h3 className="text-lg font-semibold mb-4">Adaptive learning summary</h3>
+          {/* Available Defences */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Shield className="w-5 h-5 mr-2 text-blue-600" />
+              Potential defences
+            </h3>
+            <div className="space-y-2">
+              {analysis.defences.map((defence, index) => (
+                <div key={index} className="flex items-start p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                  <Shield className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{defence}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Available Remedies */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Gavel className="w-5 h-5 mr-2 text-purple-600" />
+              Available remedies
+            </h3>
+            <div className="space-y-2">
+              {analysis.remedies.map((remedy, index) => (
+                <div key={index} className="flex items-start p-3 bg-purple-50 rounded border-l-4 border-purple-400">
+                  <Gavel className="w-4 h-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{remedy}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Immediate Actions */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Target className="w-5 h-5 mr-2 text-yellow-600" />
+              Immediate recommended actions
+            </h3>
             <div className="space-y-2 text-sm">
-              <div>Final Difficulty Level: <span className={`px-2 py-1 rounded ${getDifficultyColor(difficulty)}`}>{difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</span></div>
-              <div>Questions Attempted: {performanceTracker.total}</div>
-              <div>Current Streak: {performanceTracker.streak > 0? `+${performanceTracker.streak}` : performanceTracker.streak}</div>
-              <div>Adaptation Events: {answers.filter((a, i) => i > 0 && answers[i-1].difficulty!== a.difficulty).length}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4 mb-6">
-          <h3 className="text-lg font-semibold">Review your answers.</h3>
-          {answers.map((answer, index) => (
-            <div key={index} className="border rounded-lg p-4">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex-1">
-                  <div className="font-medium" dangerouslySetInnerHTML={{ __html: answer.questionText }}></div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Topic: {answer.topic} | Difficulty: {answer.difficulty}
-                  </div>
-                </div>
-                <div className={`flex items-center px-3 py-1 rounded-full text-sm ${
-                  answer.correct? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
-                  {answer.correct? <CheckCircle className="w-4 h-4 mr-1" /> : <XCircle className="w-4 h-4 mr-1" />}
-                  {answer.correct? 'Correct' : 'Incorrect'}
-                </div>
+              <div className="flex items-start">
+                <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">1</span>
+                <span>Cease any ongoing breach immediately.</span>
               </div>
-              <div className="text-sm">
-                <span className="font-medium">Your answer:</span> {answer.selectedOption}
+              <div className="flex items-start">
+                <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">2</span>
+                <span>Obtain urgent legal advice from a specialist trust lawyer.</span>
               </div>
-              <div className="text-sm text-gray-600 mt-2">
-                {answer.explanation}
+              <div className="flex items-start">
+                <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">3</span>
+                <span>Document all relevant facts and circumstances.</span>
+              </div>
+              <div className="flex items-start">
+                <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">4</span>
+                <span>Consider disclosure to beneficiaries if appropriate.</span>
+              </div>
+              <div className="flex items-start">
+                <span className="w-6 h-6 bg-yellow-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">5</span>
+                <span>Review insurance coverage and notify insurers if required.</span>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="text-center">
-          <button
-            onClick={resetQuiz}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Take quiz again.
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const questions = getCurrentQuestions();
-  const question = questions[currentQuestion];
-
-  return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold flex items-center">
-            <Brain className="w-8 h-8 mr-3 text-purple-600" />
-            Adaptive Trusts Law Quiz
-          </h1>
-          <button
-            onClick={resetQuiz}
-            className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Reset
-          </button>
-        </div>
-
-        <div className="flex items-center space-x-4 text-sm mb-4">
-          <span className="bg-blue-100 px-3 py-1 rounded-full">
-            Question {currentQuestion + 1} of {questions.length}
-          </span>
-          <span className="bg-green-100 px-3 py-1 rounded-full">
-            Score: {performanceTracker.correct}/{performanceTracker.total}
-          </span>
-          <span className={`px-3 py-1 rounded-full ${getDifficultyColor(difficulty)}`}>
-            {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Level
-          </span>
-          {performanceTracker.streak!== 0 && (
-            <span className={`px-3 py-1 rounded-full ${
-              performanceTracker.streak > 0? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              Streak: {performanceTracker.streak > 0? `+${performanceTracker.streak}` : performanceTracker.streak}
-            </span>
-          )}
-        </div>
-
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-purple-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-          ></div>
-        </div>
-      </div>
-
-      <div className="bg-white border rounded-lg p-6">
-        <div className="mb-4">
-          <span className="text-sm text-purple-600 font-medium">{question.topic}</span>
-          <h3 className="text-xl font-semibold mt-2" dangerouslySetInnerHTML={{ __html: question.question }}></h3>
-        </div>
-
-        <div className="space-y-3 mb-6">
-          {question.options.map((option, index) => (
-            <button
-              key={index}
-              onClick={() => handleAnswer(index)}
-              disabled={showExplanation}
-              className={`w-full p-4 text-left border rounded-lg transition-colors ${
-                showExplanation
-               ? option.correct
-                 ? 'border-green-500 bg-green-50'
-                    : selectedAnswer === index
-                 ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300 bg-gray-50'
-                  : 'border-gray-300 hover:border-blue-300 hover:bg-blue-50'
-              } ${showExplanation? 'cursor-not-allowed' : 'cursor-pointer'}`}
-            >
-              <div className="flex items-center justify-between">
-                <span>{option.text}</span>
-                {showExplanation && (
-                  <div className="flex items-center">
-                    {option.correct? (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                    ) : selectedAnswer === index? (
-                      <XCircle className="w-5 h-5 text-red-600" />
-                    ) : null}
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {showExplanation && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-            <h4 className="font-semibold text-blue-800 mb-2">Explanation:</h4>
-            <p className="text-blue-700 text-sm">{question.explanation}</p>
-            {question.qld2025Note && (
-              <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded">
-                <div className="text-sm font-medium text-green-800 mb-1">Queensland 2025 Update:</div>
-                <div className="text-sm text-green-700">{question.qld2025Note}</div>
-              </div>
-            )}
           </div>
-        )}
 
-        {showExplanation && (
           <div className="text-center">
             <button
-              onClick={nextQuestion}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              onClick={reset}
+              className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
             >
-              {/* Change button text for clarity when quiz might continue looping */}
-              {performanceTracker.total < 15? 'Next question' : 'Review results / next section'}
+              Analyse another breach.
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-semibold mb-2">How adaptive learning works:</h4>
-        <div className="text-sm text-gray-600 space-y-1">
-          <div>• Questions adapt based on your performance – answer correctly to unlock harder questions.</div>
-          <div>• Your streak affects difficulty adjustments (two or more correct moves up, two or more wrong moves down).</div>
-          <div>• Three difficulty levels: Basic (foundational), Intermediate (application), Advanced (complex analysis).</div>
-          <div>• The quiz continues until you have attempted at least 15 questions, or you complete all questions in the advanced difficulty.</div>
+      {/* Reference Information */}
+      <div className="mt-8 bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg font-semibold mb-4">Key breach principles</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+          <div>
+            <h4 className="font-medium text-red-700 mb-2">Types of breach</h4>
+            <ul className="space-y-1">
+              <li>• Breach of fiduciary duties (loyalty, no conflict).</li>
+              <li>• Breach of duty of care (prudent person standard).</li>
+              <li>• Unauthorised acts (exceeding powers).</li>
+              <li>• Administrative failures (records, accounts).</li>
+              <li>• Distributive breaches (wrong payments).</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-blue-700 mb-2">Relief and protection</h4>
+            <ul className="space-y-1">
+              <li>• Court discretion to excuse honest, reasonable trustees.</li>
+              <li>• Beneficiary consent and acquiescence.</li>
+              <li>• Professional advice defence.</li>
+              <li>• Insurance coverage where available.</li>
+              <li>• Limitation periods for claims.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-4 p-4 bg-red-100 border border-red-200 rounded">
+          <div className="flex items-start">
+            <Info className="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-800">
+              <strong>Disclaimer:</strong> This tool provides general educational guidance only. Actual breach consequences depend on specific facts, applicable law, and judicial discretion. Always seek immediate professional legal advice for potential breach situations.
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default AdaptiveAssessmentQuiz;
+export default BreachTrustAnalyser;
