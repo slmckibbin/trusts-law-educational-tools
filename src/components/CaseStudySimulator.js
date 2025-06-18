@@ -5,9 +5,9 @@ import { Play, RotateCcw, User, DollarSign, FileText, AlertTriangle, CheckCircle
 const CaseStudySimulator = () => {
   const [currentCase, setCurrentCase] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
-  const [userChoices, setUserChoices] = useState([]);
-  const [totalScore, setTotalScore] = useState(0);
-  const [showResults, setShowResults] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [score, setScore] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const caseStudies = {
     family_trust: {
