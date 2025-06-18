@@ -5,13 +5,13 @@ import { Brain, Target, TrendingUp, Award, RotateCcw, CheckCircle, XCircle, Aler
 
 const AdaptiveAssessmentQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState(); // Corrected: Initialised as empty array
-  const = useState(0); // Corrected: Added variable names
-  const = useState('basic'); // Corrected: Added variable names
+  const [answers, setAnswers] = useState();
+  const = useState(0);
+  const = useState('basic'); // basic, intermediate, advanced
   const [quizComplete, setQuizComplete] = useState(false);
-  const = useState(null); // Corrected: Added variable names
-  const = useState(false); // Corrected: Added variable names
-  const = useState({ // Corrected: Added variable names
+  const = useState(null);
+  const = useState(false);
+  const = useState({
     correct: 0,
     total: 0,
     streak: 0,
@@ -196,7 +196,7 @@ const AdaptiveAssessmentQuiz = () => {
       total: performanceTracker.total + 1,
       streak: newStreak,
       topics: {
-      ...performanceTracker.topics,
+       ...performanceTracker.topics,
         [question.topic]: {
           correct: (performanceTracker.topics[question.topic]?.correct |
 | 0) + (isCorrect? 1 : 0),
@@ -236,7 +236,7 @@ const AdaptiveAssessmentQuiz = () => {
 
   const resetQuiz = () => {
     setCurrentQuestion(0);
-    setAnswers(); // Corrected: Initialise as empty array
+    setAnswers();
     setScore(0);
     setDifficulty('basic');
     setQuizComplete(false);
@@ -425,10 +425,10 @@ const AdaptiveAssessmentQuiz = () => {
               disabled={showExplanation}
               className={`w-full p-4 text-left border rounded-lg transition-colors ${
                 showExplanation
-                ? option.correct
-                  ? 'border-green-500 bg-green-50'
+               ? option.correct
+                 ? 'border-green-500 bg-green-50'
                     : selectedAnswer === index
-                  ? 'border-red-500 bg-red-50'
+                 ? 'border-red-500 bg-red-50'
                     : 'border-gray-300 bg-gray-50'
                   : 'border-gray-300 hover:border-blue-300 hover:bg-blue-50'
               } ${showExplanation? 'cursor-not-allowed' : 'cursor-pointer'}`}
