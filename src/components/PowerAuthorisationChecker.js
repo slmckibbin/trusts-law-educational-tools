@@ -1,3 +1,4 @@
+// src/Components/PowerAuthorisationChecker.js
 import { useState } from 'react';
 import { Search, CheckCircle, XCircle, AlertTriangle, BookOpen, Scale, FileText } from 'lucide-react';
 
@@ -63,7 +64,7 @@ const PowerAuthorisationChecker = () => {
     if (!proposedAction || !jurisdiction || !trustType) return;
 
     const selectedAction = commonActions.find(a => a.id === proposedAction);
-    
+
     let authorisation = 'uncertain';
     let sources = [];
     let conditions = [];
@@ -73,7 +74,7 @@ const PowerAuthorisationChecker = () => {
     // Analysis based on jurisdiction and action type
     if (jurisdiction === 'qld2025') {
       sources.push('Queensland <em>Trusts Act 2025</em> - "All powers of absolute owner" (general authority)');
-      
+
       switch (proposedAction) {
         case 'investment_crypto':
           authorisation = 'likely_authorised';
@@ -85,7 +86,7 @@ const PowerAuthorisationChecker = () => {
             risks.push('Superannuation legislation may restrict cryptocurrency investments');
           }
           break;
-          
+
         case 'delegate_investment':
           authorisation = 'authorised';
           sources.push('Sections 72-73: Enhanced delegation powers for investment functions');
@@ -93,7 +94,7 @@ const PowerAuthorisationChecker = () => {
           conditions.push('Must maintain oversight of delegate');
           conditions.push('Must ensure delegate is appropriately qualified');
           break;
-          
+
         case 'property_purchase':
           authorisation = 'authorised';
           sources.push('Comprehensive property powers under general authority');
@@ -103,7 +104,7 @@ const PowerAuthorisationChecker = () => {
             conditions.push('Must exercise discretion properly among all beneficiaries');
           }
           break;
-          
+
         case 'trustee_fees':
           authorisation = 'conditional';
           sources.push('Professional charging rights (if provided in deed)');
@@ -114,7 +115,7 @@ const PowerAuthorisationChecker = () => {
       }
     } else if (jurisdiction === 'qld1973') {
       sources.push('Queensland <em>Trusts Act 1973</em> - Limited enumerated powers');
-      
+
       switch (proposedAction) {
         case 'investment_crypto':
           authorisation = 'conditional';
@@ -122,7 +123,7 @@ const PowerAuthorisationChecker = () => {
           conditions.push('Must be "reasonably incurred" expense standard');
           risks.push('Cryptocurrency may be considered too speculative under 1973 standards');
           break;
-          
+
         case 'delegate_investment':
           authorisation = 'restricted';
           sources.push('Limited delegation powers under 1973 Act');
@@ -146,7 +147,7 @@ const PowerAuthorisationChecker = () => {
     recommendations.push('Obtain professional legal advice before proceeding');
     recommendations.push('Document decision-making process thoroughly');
     recommendations.push('Consider obtaining beneficiary consent if appropriate');
-    
+
     if (jurisdiction === 'qld2025') {
       recommendations.push('Ensure compliance with non-excludable duties (Sections 64-70)');
     }
@@ -217,8 +218,8 @@ const PowerAuthorisationChecker = () => {
           {/* Proposed Action */}
           <div>
             <label className="block text-sm font-medium mb-2">Proposed action:</label>
-            <select 
-              value={proposedAction} 
+            <select
+              value={proposedAction}
               onChange={(e) => setProposedAction(e.target.value)}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
             >
@@ -252,7 +253,7 @@ const PowerAuthorisationChecker = () => {
                   jurisdiction === 'qld2025' ? 'border-green-500 bg-green-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 2025</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   "All powers of absolute owner" + enhanced duties
                 </div>
@@ -263,7 +264,7 @@ const PowerAuthorisationChecker = () => {
                   jurisdiction === 'qld1973' ? 'border-orange-500 bg-orange-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 1973</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   Limited enumerated powers approach
                 </div>
@@ -330,7 +331,7 @@ const PowerAuthorisationChecker = () => {
                 Category: {analysis.action.category}
               </span>
               <span className="bg-green-100 px-3 py-1 rounded-full">
-                {jurisdiction === 'qld2025' ? <>Queensland <em>Trusts Act 2025</em></> : <>Queensland <em>Trusts Act 1973</em></>}
+                {jurisdiction === 'qld2025' ? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></>}
               </span>
               <span className="bg-purple-100 px-3 py-1 rounded-full">
                 {trustType.charAt(0).toUpperCase() + trustType.slice(1)} trust
@@ -441,7 +442,7 @@ const PowerAuthorisationChecker = () => {
         <h3 className="text-lg font-semibold mb-4">Key authorisation principles</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
           <div>
-            <h4 className="font-medium text-green-700 mb-2">Queensland <em>Trusts Act 2025</em></h4>
+            <h4 className="font-medium text-green-700 mb-2">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></h4>
             <ul className="space-y-1">
               <li>• "All powers of absolute owner" general authority</li>
               <li>• Enhanced delegation powers (Sections 72-73)</li>
@@ -461,7 +462,7 @@ const PowerAuthorisationChecker = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="mt-4 p-4 bg-blue-100 border border-blue-200 rounded">
           <div className="flex items-start">
             <FileText className="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
