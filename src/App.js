@@ -1,9 +1,6 @@
-// src/App.js
-
 import React from 'react';
 import './App.css'; // Keep your main CSS file
 
-// Import all your components from the Components folder
 import AdaptiveAssessmentQuiz from './Components/AdaptiveAssessmentQuiz';
 import BreachTrustAnalyser from './Components/BreachTrustAnalyser';
 import CaseStudySimulator from './Components/CaseStudySimulator';
@@ -14,7 +11,6 @@ import PowerAuthorisationChecker from './Components/PowerAuthorisationChecker';
 
 function App() {
   return (
-    // Tailwind CSS classes for a responsive and centered layout
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
       {/* Header and Navigation */}
       <header className="w-full max-w-4xl bg-blue-700 text-white p-4 rounded-lg shadow-md mb-8">
@@ -58,17 +54,16 @@ function App() {
           </div>
         </section>
 
-        {/* Breach Trust Analyser Section (Placeholder as code was not provided) */}
+        {/* Breach Trust Analyser Section */}
         <section id="breach-trust-analyser" className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
             Breach of Trust Analyser
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            (Placeholder) This tool will allow you to analyse scenarios to identify potential breaches of trust and understand their implications.
+            Identify and analyse potential trustee breaches with legal consequences and defences.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            {/* Replace this with your actual <BreachTrustAnalyser /> component when available */}
-            <p className="text-gray-600 italic">BreachTrustAnalyser component will go here.</p>
+            <BreachTrustAnalyser />
           </div>
         </section>
 
@@ -78,7 +73,7 @@ function App() {
             Case Study Simulator
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Practise applying trusts law principles to case studies.
+            Practice applying trusts law principles to realistic case studies.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <CaseStudySimulator />
@@ -104,7 +99,7 @@ function App() {
             Jurisdiction Comparison Tool
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Compare trusts law across different Australian jurisdictions to highlight key differences and similarities.
+            Compare trusts law across different jurisdictions to highlight key differences and similarities.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <JurisdictionComparisonTool />
@@ -117,7 +112,7 @@ function App() {
             Power and Authorisation Checker
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Verify the powers and authorisations related to trusts in different contexts.
+            Verify the powers and authorizations related to trusts in different contexts.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <PowerAuthorisationChecker />
