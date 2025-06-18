@@ -1,3 +1,4 @@
+// src/Components/InteractiveDutyChecker.js
 import { useState } from 'react';
 import { AlertTriangle, CheckCircle, XCircle, Info, BookOpen, Scale } from 'lucide-react';
 
@@ -128,6 +129,8 @@ const InteractiveDutyChecker = () => {
     // Add general recommendations
     recommendations.push('Seek professional legal advice immediately');
     recommendations.push('Document all decision-making processes');
+    recommendations.push('Consider obtaining beneficiary consent if appropriate');
+
     if (jurisdiction === 'qld2025') {
       recommendations.push('Review compliance with non-excludable statutory duties');
       protections.push('Court discretion to relieve liability (Section 160)');
@@ -166,8 +169,8 @@ const InteractiveDutyChecker = () => {
           {/* Scenario Selection */}
           <div>
             <label className="block text-sm font-medium mb-2">Select scenario:</label>
-            <select 
-              value={scenario} 
+            <select
+              value={scenario}
               onChange={(e) => setScenario(e.target.value)}
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
             >
@@ -216,7 +219,7 @@ const InteractiveDutyChecker = () => {
                   jurisdiction === 'qld2025' ? 'border-green-500 bg-green-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 2025</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   Modernised legislation with non-excludable duties and enhanced powers
                 </div>
@@ -227,7 +230,7 @@ const InteractiveDutyChecker = () => {
                   jurisdiction === 'qld1973' ? 'border-orange-500 bg-orange-50' : 'border-gray-300'
                 }`}
               >
-                <div className="font-medium">Queensland <em>Trusts Act 1973</em></div>
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></div>
                 <div className="text-sm text-gray-600 mt-1">
                   Previous legislation with limited statutory duties (pre-modernisation)
                 </div>
@@ -274,7 +277,7 @@ const InteractiveDutyChecker = () => {
                 {trusteeType.charAt(0).toUpperCase() + trusteeType.slice(1)} trustee
               </span>
               <span className="bg-green-100 px-3 py-1 rounded-full">
-                {jurisdiction === 'qld2025' ? <>Queensland <em>Trusts Act 2025</em></> : <>Queensland <em>Trusts Act 1973</em></>}
+                {jurisdiction === 'qld2025' ? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></>}
               </span>
               <span className="bg-purple-100 px-3 py-1 rounded-full">
                 {trustType.charAt(0).toUpperCase() + trustType.slice(1)} trust
@@ -288,7 +291,7 @@ const InteractiveDutyChecker = () => {
             analysis.severity === 'medium' ? 'bg-yellow-100 border border-yellow-300' :
             'bg-green-100 border border-green-300'
           }`}>
-            {analysis.severity === 'high' ? 
+            {analysis.severity === 'high' ?
               <XCircle className="w-6 h-6 text-red-600 mr-3" /> :
               analysis.severity === 'medium' ?
               <AlertTriangle className="w-6 h-6 text-yellow-600 mr-3" /> :
@@ -297,13 +300,13 @@ const InteractiveDutyChecker = () => {
             <div>
               <div className="font-semibold">
                 {analysis.severity === 'high' ? 'High risk breach' :
-                 analysis.severity === 'medium' ? 'Moderate breach risk' :
-                 'Low risk / technical issues'}
+                  analysis.severity === 'medium' ? 'Moderate breach risk' :
+                  'Low risk / technical issues'}
               </div>
               <div className="text-sm">
                 {analysis.severity === 'high' ? 'Serious breaches with potential personal liability' :
-                 analysis.severity === 'medium' ? 'Potential breaches requiring immediate attention' :
-                 'Minor issues that should be addressed'}
+                  analysis.severity === 'medium' ? 'Potential breaches requiring immediate attention' :
+                  'Minor issues that should be addressed'}
               </div>
             </div>
           </div>
@@ -389,7 +392,7 @@ const InteractiveDutyChecker = () => {
         <h3 className="text-lg font-semibold mb-4">Key Queensland 2025 vs 1973 differences</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-medium text-green-700 mb-2">Queensland <em>Trusts Act 2025</em></h4>
+            <h4 className="font-medium text-green-700 mb-2">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em></h4>
             <ul className="text-sm space-y-1">
               <li>• Non-excludable core duties (Sections 64-70)</li>
               <li>• Tiered professional standards</li>
@@ -400,7 +403,7 @@ const InteractiveDutyChecker = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-medium text-orange-700 mb-2">Queensland <em>Trusts Act 1973</em></h4>
+            <h4 className="font-medium text-orange-700 mb-2">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em></h4>
             <ul className="text-sm space-y-1">
               <li>• General law duties predominantly</li>
               <li>• Limited statutory powers</li>
