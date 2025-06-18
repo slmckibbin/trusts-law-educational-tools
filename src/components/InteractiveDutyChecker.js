@@ -1,3 +1,4 @@
+// src/components/InteractiveDutyChecker.js
 import { useState } from 'react';
 import { AlertTriangle, CheckCircle, XCircle, Info, BookOpen, Scale } from 'lucide-react';
 
