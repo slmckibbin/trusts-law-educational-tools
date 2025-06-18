@@ -1,130 +1,122 @@
-import React from 'react';
-import './App.css'; 
-
-import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; 
+import React, { useState } from 'react';
+import './App.css';
+import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz';
 import BreachTrustAnalyser from './components/BreachTrustAnalyser';
-import CaseStudySimulator from './components/CaseStudySimulator'; 
-import InteractiveDutyChecker from './components/InteractiveDutyChecker'; 
-import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; 
-import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; 
-
+import InteractiveDutyChecker from './components/InteractiveDutyChecker';
+import PowerAuthorisationChecker from './components/PowerAuthorisationChecker';
+import CaseStudySimulator from './components/CaseStudySimulator';
+import JurisdictionComparisonTool from './components/JurisdictionComparisonTool';
+import { BookOpen, Brain, Shield, CheckCircle, Gavel, MapPin } from 'lucide-react';
 
 function App() {
+  const [activeComponent, setActiveComponent] = useState('quiz');
+
+  const tools = [
+    {
+      id: 'quiz',
+      name: 'Adaptive Assessment Quiz',
+      description: 'Test your knowledge with adaptive difficulty',
+      icon: <Brain className="w-6 h-6" />,
+      component: AdaptiveAssessmentQuiz
+    },
+    {
+      id: 'breach',
+      name: 'Breach Trust Analyser',
+      description: 'Analyse potential trust breaches',
+      icon: <Shield className="w-6 h-6" />,
+      component: BreachTrustAnalyser
+    },
+    {
+      id: 'duty',
+      name: 'Interactive Duty Checker',
+      description: 'Check trustee duties and obligations',
+      icon: <CheckCircle className="w-6 h-6" />,
+      component: InteractiveDutyChecker
+    },
+    {
+      id: 'power',
+      name: 'Power Authorisation Checker',
+      description: 'Verify trustee powers and authorities',
+      icon: <Gavel className="w-6 h-6" />,
+      component: PowerAuthorisationChecker
+    },
+    {
+      id: 'case',
+      name: 'Case Study Simulator',
+      description: 'Interactive case study scenarios',
+      icon: <BookOpen className="w-6 h-6" />,
+      component: CaseStudySimulator
+    },
+    {
+      id: 'jurisdiction',
+      name: 'Jurisdiction Comparison Tool',
+      description: 'Compare trust laws across jurisdictions',
+      icon: <MapPin className="w-6 h-6" />,
+      component: JurisdictionComparisonTool
+    }
+  ];
+
+  const ActiveComponent = tools.find(tool => tool.id === activeComponent)?.component;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
-      {/* Header and Navigation */}
-      <header className="w-full max-w-4xl bg-blue-700 text-white p-4 rounded-lg shadow-md mb-8">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          Trusts Law Educational Tools
-        </h1>
-        <nav className="flex flex-wrap justify-center gap-4 mt-4">
-          <a href="#adaptive-assessment-quiz" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Adaptive Quiz
-          </a>
-          <a href="#breach-trust-analyser" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Breach Analyser
-          </a>
-          <a href="#case-study-simulator" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Case Study Simulator
-          </a>
-          <a href="#interactive-duty-checker" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Duty Checker
-          </a>
-          <a href="#jurisdiction-comparison-tool" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Jurisdiction Tool
-          </a>
-          <a href="#power-authorisation-checker" className="px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base">
-            Power Checker
-          </a>
-        </nav>
-      </header>
-
-      {/* Main Content Area for Tools */}
-      <main className="w-full max-w-4xl flex flex-col gap-8">
-        {/* Adaptive Assessment Quiz Section */}
-        <section id="adaptive-assessment-quiz" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Adaptive Assessment Quiz
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            An interactive quiz that adapts to your learning progress, helping you master trusts law concepts.
-          </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <AdaptiveAssessmentQuiz />
+    <div className="min-h-screen bg-gray-100">
+      <nav className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <BookOpen className="w-8 h-8 text-blue-600 mr-3" />
+              <h1 className="text-xl font-bold text-gray-900">
+                Queensland Trust Law Educational Tools
+              </h1>
+            </div>
           </div>
-        </section>
+        </div>
+      </nav>
 
-        {/* Breach Trust Analyser Section */}
-        <section id="breach-trust-analyser" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Breach of Trust Analyser
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Identify and analyse potential trustee breaches with legal consequences and defences.
-          </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <BreachTrustAnalyser />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold mb-4">Educational Tools</h2>
+              <nav className="space-y-2">
+                {tools.map((tool) => (
+                  <button
+                    key={tool.id}
+                    onClick={() => setActiveComponent(tool.id)}
+                    className={`w-full text-left p-3 rounded-lg transition-colors ${
+                      activeComponent === tool.id
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'hover:bg-gray-50 text-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      {tool.icon}
+                      <div className="ml-3">
+                        <div className="font-medium">{tool.name}</div>
+                        <div className="text-sm text-gray-500">{tool.description}</div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </nav>
+            </div>
           </div>
-        </section>
 
-        {/* Case Study Simulator Section */}
-        <section id="case-study-simulator" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Case Study Simulator
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Practise applying trusts law principles to case studies.
-          </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <CaseStudySimulator />
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            {ActiveComponent && <ActiveComponent />}
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* Interactive Duty Checker Section */}
-        <section id="interactive-duty-checker" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Interactive Duty Checker
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Explore and understand the various duties of a trustee with this interactive tool.
+      <footer className="bg-white border-t mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <p className="text-center text-gray-500 text-sm">
+            Queensland Trust Law Educational Tools - For educational purposes only
           </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <InteractiveDutyChecker />
-          </div>
-        </section>
-
-        {/* Jurisdiction Comparison Tool Section */}
-        <section id="jurisdiction-comparison-tool" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Jurisdiction Comparison Tool
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Compare trusts law across different jurisdictions to highlight key differences and similarities.
-          </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <JurisdictionComparisonTool />
-          </div>
-        </section>
-
-        {/* Power Authorisation Checker Section */}
-        <section id="power-authorisation-checker" className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-            Power and Authorisation Checker
-          </h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Verify the powers and authorisations related to trusts in different contexts.
-          </p>
-          <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
-            <PowerAuthorisationChecker />
-          </div>
-        </section>
-
-      </main>
-
-      {/* Footer (Optional) */}
-      <footer className="mt-8 text-center text-gray-600 text-sm">
-        <p>&copy; 2025 Trusts Law Educational Tools. All rights reserved.</p>
-      </footer>
+        </div>
+      </div>
     </div>
   );
 }
