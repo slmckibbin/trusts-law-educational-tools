@@ -1,20 +1,16 @@
-// src/App.js
-
 import React from 'react';
-import './App.css'; // Keep your main CSS file
+import './App.css'; 
 
-// Import all your components from the 'components' folder (using LOWERCASE 'components' to match local disk)
-import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; // Corrected to lowercase 'components'
-import BreachTrustAnalyser from './components/BreachTrustAnalyser'; // Corrected to lowercase 'components'
-import CaseStudySimulator from './components/CaseStudySimulator'; // Corrected to lowercase 'components'
-import InteractiveDutyChecker from './components/InteractiveDutyChecker'; // Corrected to lowercase 'components'
-import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; // Corrected to lowercase 'components'
-import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; // Corrected to lowercase 'components'
+import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; 
+import BreachTrustAnalyser from './components/BreachTrustAnalyser';
+import CaseStudySimulator from './components/CaseStudySimulator'; 
+import InteractiveDutyChecker from './components/InteractiveDutyChecker'; 
+import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; 
+import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; 
 
 
 function App() {
   return (
-    // Tailwind CSS classes for a responsive and centered layout
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
       {/* Header and Navigation */}
       <header className="w-full max-w-4xl bg-blue-700 text-white p-4 rounded-lg shadow-md mb-8">
