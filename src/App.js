@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css'; // Keep your main CSS file
+import './App.css'; 
 
-import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; // Changed to lowercase 'components'
-import BreachTrustAnalyser from './components/BreachTrustAnalyser'; // Changed to lowercase 'components'
-import CaseStudySimulator from './components/CaseStudySimulator'; // Changed to lowercase 'components'
-import InteractiveDutyChecker from './components/InteractiveDutyChecker'; // Changed to lowercase 'components'
-import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; // Changed to lowercase 'components'
-import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; // Changed to lowercase 'components'
+import AdaptiveAssessmentQuiz from './components/AdaptiveAssessmentQuiz'; 
+import BreachTrustAnalyser from './components/BreachTrustAnalyser'; 
+import CaseStudySimulator from './components/CaseStudySimulator'; 
+import InteractiveDutyChecker from './components/InteractiveDutyChecker'; 
+import JurisdictionComparisonTool from './components/JurisdictionComparisonTool'; 
+import PowerAuthorisationChecker from './components/PowerAuthorisationChecker'; 
 
 
 function App() {
