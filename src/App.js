@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'; // Keep your main CSS file
+import './App.css'; 
 
 import AdaptiveAssessmentQuiz from './Components/AdaptiveAssessmentQuiz';
 import BreachTrustAnalyser from './Components/BreachTrustAnalyser';
@@ -73,7 +73,7 @@ function App() {
             Case Study Simulator
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Practice applying trusts law principles to realistic case studies.
+            Practise applying trusts law principles to realistic case studies.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <CaseStudySimulator />
@@ -112,7 +112,7 @@ function App() {
             Power and Authorisation Checker
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Verify the powers and authorizations related to trusts in different contexts.
+            Verify the powers and authorisations related to trusts in different contexts.
           </p>
           <div className="bg-gray-50 p-4 rounded-md border border-gray-200">
             <PowerAuthorisationChecker />
