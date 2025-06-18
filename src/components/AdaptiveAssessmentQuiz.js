@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Brain, CheckCircle, XCircle, ArrowRight, ArrowLeft, Trophy, Target, BookOpen, AlertTriangle } from 'lucide-react';
 
 const AdaptiveAssessmentQuiz = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState('');
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [difficulty, setDifficulty] = useState('intermediate');
