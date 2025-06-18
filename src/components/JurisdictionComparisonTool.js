@@ -1,415 +1,448 @@
-// src/Components/JurisdictionComparisonTool.js
+// src/components/InteractiveDutyChecker.js
 import { useState } from 'react';
-import { Map, BookOpen, Scale, Users, DollarSign, Clock, Shield, AlertTriangle } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Info, BookOpen, Scale } from 'lucide-react';
 
-const JurisdictionComparisonTool = () => {
-  const [selectedJurisdictions, setSelectedJurisdictions] = useState(['qld2025', 'nsw']);
-  const [comparisonCategory, setComparisonCategory] = useState('powers');
-  const [showDetails, setShowDetails] = useState(null);
+const InteractiveDutyChecker = () => {
+  const = useState('');
+  const = useState('');
+  const [jurisdiction, setJurisdiction] = useState('');
+  const = useState('');
+  const [analysis, setAnalysis] = useState(null);
 
-  const jurisdictions = {
-    qld2025: {
-      name: 'Queensland 2025',
-      fullName: 'Trusts Act 2025 (Qld)',
-      color: 'green',
-      status: 'Most progressive',
-      description: 'Comprehensive modernisation with non-excludable duties'
-    },
-    qld1973: {
-      name: 'Queensland 1973',
-      fullName: 'Trusts Act 1973 (Qld)',
-      color: 'orange',
-      status: 'Superseded',
-      description: 'Previous Queensland legislation (for comparison)'
-    },
-    nsw: {
-      name: 'New South Wales',
-      fullName: 'Trustee Act 1925 (NSW)',
-      color: 'blue',
-      status: 'Traditional',
-      description: 'Long-established framework with recent amendments'
-    },
-    vic: {
-      name: 'Victoria',
-      fullName: 'Trustee Act 1958 (Vic)',
-      color: 'purple',
-      status: 'Moderate reform',
-      description: 'Some modernisation but limited scope'
-    },
-    wa: {
-      name: 'Western Australia',
-      fullName: 'Trustees Act 1962 (WA)',
-      color: 'red',
-      status: 'Traditional',
-      description: 'Conservative approach with basic provisions'
-    },
-    sa: {
-      name: 'South Australia',
-      fullName: 'Trustee Act 1936 (SA)',
-      color: 'indigo',
-      status: 'Mixed',
-      description: 'Traditional powers with some innovations'
-    }
+  const duties = {
+    core_non_excludable:,
+    traditional_duties:
   };
 
-  const comparisonData = {
-    powers: {
-      title: 'Trustee Powers',
-      icon: <Shield className="w-5 h-5" />,
-      categories: [
-        {
-          name: 'General Powers',
-          qld2025: { status: 'excellent', text: 'All powers of absolute owner', detail: 'Revolutionary approach - trustees have all powers of absolute ownership subject to duties' },
-          qld1973: { status: 'poor', text: 'Limited enumerated powers', detail: 'Restrictive list of specific powers only' },
-          nsw: { status: 'good', text: 'Broad statutory powers', detail: 'Comprehensive but still enumerated approach' },
-          vic: { status: 'good', text: 'Wide powers with limitations', detail: 'Good range but some restrictions remain' },
-          wa: { status: 'fair', text: 'General sale powers', detail: 'More limited than other jurisdictions' },
-          sa: { status: 'fair', text: 'Limited statutory powers', detail: 'Basic enumerated powers only' }
-        },
-        {
-          name: 'Investment Powers',
-          qld2025: { status: 'excellent', text: 'Unrestricted + delegation', detail: 'Any investment + power to delegate to professionals (12-month max terms)' },
-          qld1973: { status: 'good', text: 'General investment power', detail: 'Prudent person test, reasonably incurred expenses' },
-          nsw: { status: 'good', text: 'General investment power', detail: 'Prudent person test, can exclude some requirements' },
-          vic: { status: 'good', text: 'General investment power', detail: 'Similar to NSW with some variations' },
-          wa: { status: 'good', text: 'General investment power', detail: 'Prudent person test, reasonably incurred standard' },
-          sa: { status: 'good', text: 'General investment power', detail: 'Basic prudent person requirements' }
-        },
-        {
-          name: 'Delegation Powers',
-          qld2025: { status: 'excellent', text: 'Enhanced delegation rights', detail: 'Sections 72-73: Can delegate investment and admin functions with oversight' },
-          qld1973: { status: 'poor', text: 'Limited delegation', detail: 'Traditional restrictions on delegation of powers' },
-          nsw: { status: 'fair', text: 'Basic delegation powers', detail: 'Some delegation allowed but restricted' },
-          vic: { status: 'fair', text: 'Limited delegation', detail: 'Conservative approach to delegation' },
-          wa: { status: 'fair', text: 'Basic delegation', detail: 'Traditional limitations apply' },
-          sa: { status: 'poor', text: 'Minimal delegation', detail: 'Very limited delegation provisions' }
-        },
-        {
-          name: 'Administrative Powers',
-          qld2025: { status: 'excellent', text: 'Comprehensive admin powers', detail: 'All necessary powers for modern trust administration' },
-          qld1973: { status: 'fair', text: 'Basic admin powers', detail: 'Limited to specific enumerated functions' },
-          nsw: { status: 'good', text: 'Wide admin powers', detail: 'Good range of administrative functions' },
-          vic: { status: 'good', text: 'Broad admin powers', detail: 'Reasonable administrative flexibility' },
-          wa: { status: 'fair', text: 'Standard admin powers', detail: 'Basic administrative functions only' },
-          sa: { status: 'fair', text: 'Limited admin powers', detail: 'Conservative administrative scope' }
-        }
-      ]
+  const scenarios =
     },
-    duties: {
-      title: 'Trustee Duties',
-      icon: <Scale className="w-5 h-5" />,
-      categories: [
-        {
-          name: 'Core Duties (Non-excludable)',
-          qld2025: { status: 'excellent', text: 'Statutory non-excludable duties', detail: 'Sections 64-70: Honesty, care, records, information - cannot be excluded' },
-          qld1973: { status: 'poor', text: 'General law only', detail: 'No statutory non-excludable duties' },
-          nsw: { status: 'poor', text: 'General law only', detail: 'Traditional equitable duties, mostly excludable' },
-          vic: { status: 'poor', text: 'General law only', detail: 'No comprehensive statutory duty framework' },
-          wa: { status: 'poor', text: 'General law only', detail: 'Relies primarily on equitable duties' },
-          sa: { status: 'poor', text: 'General law only', detail: 'Traditional equitable duty approach' }
-        },
-        {
-          name: 'Duty of Care Standards',
-          qld2025: { status: 'excellent', text: 'Tiered professional standards', detail: 'Sections 65-67: Different standards for professional, knowledgeable, and ordinary trustees' },
-          qld1973: { status: 'fair', text: 'General prudent person', detail: 'Single standard for all trustees' },
-          nsw: { status: 'fair', text: 'Prudent person standard', detail: 'Objective standard for all trustees' },
-          vic: { status: 'fair', text: 'Prudent person standard', detail: 'Traditional single standard approach' },
-          wa: { status: 'fair', text: 'Prudent person standard', detail: 'Basic prudent person test' },
-          sa: { status: 'fair', text: 'Prudent person standard', detail: 'Standard objective test' }
-        },
-        {
-          name: 'Record Keeping',
-          qld2025: { status: 'excellent', text: '3-year minimum statutory', detail: 'Section 69: Detailed record-keeping requirements, cannot be excluded' },
-          qld1973: { status: 'fair', text: 'Basic record keeping', detail: 'Section 77: General obligation to keep accounts' },
-          nsw: { status: 'good', text: 'Account keeping duties', detail: 'Good accounting and reporting requirements' },
-          vic: { status: 'fair', text: 'Basic account duties', detail: 'Standard accounting obligations' },
-          wa: { status: 'fair', text: 'General accounting', detail: 'Basic record-keeping requirements' },
-          sa: { status: 'good', text: 'Prescribed records', detail: 'Specific record-keeping obligations' }
-        },
-        {
-          name: 'Information Disclosure',
-          qld2025: { status: 'excellent', text: 'Statutory disclosure rights', detail: 'Section 70: Beneficiaries have statutory rights to information' },
-          qld1973: { status: 'poor', text: 'General law only', detail: 'Limited to equitable rights to accounts' },
-          nsw: { status: 'fair', text: 'General law disclosure', detail: 'Traditional equitable information rights' },
-          vic: { status: 'fair', text: 'Limited disclosure', detail: 'Basic equitable disclosure principles' },
-          wa: { status: 'fair', text: 'General law only', detail: 'Traditional approach to information' },
-          sa: { status: 'fair', text: 'Basic disclosure', detail: 'Some statutory inspection rights' }
-        }
-      ]
+    {
+      id: 'self_dealing',
+      title: 'Self-Dealing Transaction',
+      description: 'Corporate trustee purchased trust property for its parent company at below market value.',
+      triggers: ['conflict', 'honesty', 'profit']
     },
-    protections: {
-      title: 'Trustee Protections',
-      icon: <Shield className="w-5 h-5" />,
-      categories: [
-        {
-          name: 'Indemnification Rights',
-          qld2025: { status: 'excellent', text: 'Enhanced indemnification', detail: 'Sections 154-155: Broader reimbursement rights with stronger protections' },
-          qld1973: { status: 'good', text: 'Standard indemnification', detail: 'Traditional right to reimbursement for reasonably incurred expenses' },
-          nsw: { status: 'good', text: 'Broad reimbursement', detail: 'All expenses incurred in or about trust administration' },
-          vic: { status: 'good', text: 'Standard indemnity', detail: 'General reimbursement for proper expenses' },
-          wa: { status: 'fair', text: 'Reasonable expenses only', detail: 'Limited to reasonably incurred expenses' },
-          sa: { status: 'good', text: 'General indemnity', detail: 'Standard reimbursement provisions' }
-        },
-        {
-          name: 'Court Relief Powers',
-          qld2025: { status: 'excellent', text: 'Discretionary relief', detail: 'Section 160: Court may relieve trustees from liability in appropriate cases' },
-          qld1973: { status: 'fair', text: 'Limited court relief', detail: 'Basic court discretion to excuse breaches' },
-          nsw: { status: 'good', text: 'Court relief available', detail: 'Section 85: Court may excuse honest and reasonable trustees' },
-          vic: { status: 'good', text: 'Relief provisions', detail: 'Court discretion for honest and reasonable conduct' },
-          wa: { status: 'fair', text: 'Basic relief', detail: 'Limited court relief provisions' },
-          sa: { status: 'fair', text: 'Court discretion', detail: 'Basic court relief for honest trustees' }
-        },
-        {
-          name: 'Professional Advice Protection',
-          qld2025: { status: 'excellent', text: 'Statutory advice protection', detail: 'Section 153: Enhanced protection when acting on professional advice' },
-          qld1973: { status: 'poor', text: 'General law only', detail: 'No specific statutory protection for professional advice' },
-          nsw: { status: 'fair', text: 'Limited advice protection', detail: 'Some protection for following proper advice' },
-          vic: { status: 'fair', text: 'Basic advice protection', detail: 'General protection for reasonable reliance' },
-          wa: { status: 'fair', text: 'Limited protection', detail: 'Basic advice reliance protection' },
-          sa: { status: 'poor', text: 'Minimal protection', detail: 'Very limited statutory advice protection' }
-        }
-      ]
+    {
+      id: 'information_refusal',
+      title: 'Refusing Information Request',
+      description: 'Trustee refused to provide trust accounts to a discretionary beneficiary, citing confidentiality.',
+      triggers: ['information', 'records']
     },
-    beneficiary: {
-      title: 'Beneficiary Rights',
-      icon: <Users className="w-5 h-5" />,
-      categories: [
-        {
-          name: 'Information Access',
-          qld2025: { status: 'excellent', text: 'Comprehensive statutory rights', detail: 'Section 70: Clear entitlement to trust information and documents' },
-          qld1973: { status: 'poor', text: 'Limited equitable rights', detail: 'Traditional rights to accounts only' },
-          nsw: { status: 'fair', text: 'General law rights', detail: 'Equitable rights to trust accounts and some information' },
-          vic: { status: 'fair', text: 'Traditional rights', detail: 'Limited to traditional equitable principles' },
-          wa: { status: 'fair', text: 'Basic information rights', detail: 'Traditional equitable information access' },
-          sa: { status: 'good', text: 'Some statutory rights', detail: 'Inspection rights for records in certain circumstances' }
-        },
-        {
-          name: 'Enforcement Mechanisms',
-          qld2025: { status: 'excellent', text: 'Enhanced enforcement', detail: 'District Court jurisdiction, streamlined procedures' },
-          qld1973: { status: 'fair', text: 'Traditional enforcement', detail: 'Supreme Court jurisdiction only' },
-          nsw: { status: 'good', text: 'Court enforcement', detail: 'Good range of enforcement mechanisms' },
-          vic: { status: 'fair', text: 'Standard enforcement', detail: 'Traditional court-based enforcement' },
-          wa: { status: 'fair', text: 'Basic enforcement', detail: 'Limited enforcement mechanisms' },
-          sa: { status: 'fair', text: 'Court enforcement', detail: 'Standard judicial enforcement' }
-        },
-        {
-          name: 'Protection from Unsuitable Trustees',
-          qld2025: { status: 'excellent', text: 'Comprehensive disqualification', detail: 'Broad grounds for disqualifying unsuitable trustees' },
-          qld1973: { status: 'poor', text: 'Limited protections', detail: 'Basic disqualification provisions only' },
-          nsw: { status: 'fair', text: 'Standard protections', detail: 'Traditional disqualification grounds' },
-          vic: { status: 'fair', text: 'Basic protections', detail: 'Limited unsuitable trustee provisions' },
-          wa: { status: 'fair', text: 'Standard provisions', detail: 'Basic trustee qualification requirements' },
-          sa: { status: 'fair', text: 'Limited protections', detail: 'Minimal unsuitable trustee protections' }
-        }
-      ]
+    {
+      id: 'excessive_fees',
+      title: 'Excessive Professional Fees',
+      description: 'Professional trustee charged a $50,000 annual fee for a simple family trust with $200,000 assets.',
+      triggers: ['profit', 'care', 'honesty']
+    },
+    {
+      id: 'delegation_failure',
+      title: 'Improper Delegation',
+      description: 'Trustee delegated all investment decisions to an unqualified family member indefinitely without oversight.',
+      triggers: ['delegation', 'care', 'prudence']
     }
-  };
+  ];
 
-  const toggleJurisdiction = (jurisdiction) => {
-    if (selectedJurisdictions.includes(jurisdiction)) {
-      if (selectedJurisdictions.length > 1) {
-        setSelectedJurisdictions(selectedJurisdictions.filter(j => j !== jurisdiction));
+  const analyzeScenario = () => {
+    if (!scenario ||!trusteeType ||!jurisdiction ||!trustType) return;
+
+    const selectedScenario = scenarios.find(s => s.id === scenario);
+    const applicableDuties =;
+    const breaches =;
+    const protections =;
+    const recommendations =;
+
+    // Analyse based on scenario triggers
+    if (selectedScenario.triggers.includes('investment') |
+| selectedScenario.triggers.includes('prudence')) {
+      applicableDuties.push('Duty to invest prudently.');
+      if (jurisdiction === 'qld2025') {
+        applicableDuties.push('Enhanced duty of care (Sections 65–67).');
+        if (trusteeType === 'professional') {
+          breaches.push('Professional trustee standard – must exercise care equivalent to a prudent person in the trustee profession.');
+        }
       }
-    } else {
-      setSelectedJurisdictions([...selectedJurisdictions, jurisdiction]);
+      breaches.push('Failure to diversify investments appropriately.');
+      breaches.push('Investing in excessively risky assets without proper consideration.');
     }
+
+    if (selectedScenario.triggers.includes('conflict') |
+| selectedScenario.triggers.includes('profit')) {
+      applicableDuties.push('Duty not to profit from a trust position.');
+      applicableDuties.push('Duty to act honestly and in good faith.');
+      if (jurisdiction === 'qld2025') {
+        breaches.push('Breach of non-excludable statutory duty (Section 64).');
+      }
+      breaches.push('Self-dealing transaction potentially voidable.');
+      recommendations.push('Obtain independent valuation and beneficiary consent.');
+    }
+
+    if (selectedScenario.triggers.includes('information') |
+| selectedScenario.triggers.includes('records')) {
+      if (jurisdiction === 'qld2025') {
+        applicableDuties.push('Statutory duty to provide information (Section 70).');
+        applicableDuties.push('Duty to keep accurate records (Section 69).');
+        breaches.push('Breach of non-excludable information disclosure duty.');
+        protections.push('Limited protection – courts may excuse minor breaches if the trustee acted reasonably.');
+      } else {
+        applicableDuties.push('General law duty to provide trust accounts.');
+        protections.push('Some discretion to withhold confidential documents.');
+      }
+    }
+
+    if (selectedScenario.triggers.includes('delegation')) {
+      applicableDuties.push('Duty not to delegate inappropriately.');
+      if (jurisdiction === 'qld2025') {
+        protections.push('Enhanced delegation powers (Sections 72–73), but must supervise delegates.');
+        breaches.push('Improper delegation without adequate oversight or qualification assessment.');
+      } else {
+        breaches.push('General law prohibition on delegating discretionary powers.');
+      }
+    }
+
+    // Add care duty based on trustee type
+    if (trusteeType === 'professional') {
+      applicableDuties.push('Enhanced professional standard of care.');
+      if (jurisdiction === 'qld2025') {
+        breaches.push('Failed to meet professional trustee standard under Section 65.');
+      }
+    } else if (trusteeType === 'individual') {
+      applicableDuties.push('Ordinary prudent person standard.');
+      if (jurisdiction === 'qld2025') {
+        applicableDuties.push('Basic duty of care (Section 67).');
+      }
+    }
+
+    // Add general recommendations
+    recommendations.push('Seek professional legal advice immediately.');
+    recommendations.push('Document all decision-making processes.');
+    recommendations.push('Consider obtaining beneficiary consent if appropriate.');
+
+    if (jurisdiction === 'qld2025') {
+      recommendations.push('Review compliance with non-excludable statutory duties.');
+      protections.push('Court discretion to relieve liability (Section 160).');
+    }
+
+    setAnalysis({
+      scenario: selectedScenario,
+      applicableDuties,
+      breaches,
+      protections,
+      recommendations,
+      severity: breaches.length > 3? 'high' : breaches.length > 1? 'medium' : 'low'
+    });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'excellent': return 'bg-green-100 text-green-800 border-green-200';
-      case 'good': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'fair': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'poor': return 'bg-red-100 text-red-800 border-red-200';
+  const reset = () => {
+    setScenario('');
+    setTrusteeType('');
+    setJurisdiction('');
+    setTrustType('');
+    setAnalysis(null);
+  };
+
+  const getSeverityColor = (severity) => {
+    switch (severity) {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-green-100 text-green-800 border-green-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'excellent': return '🌟';
-      case 'good': return '✅';
-      case 'fair': return '⚠️';
-      case 'poor': return '❌';
-      default: return '❓';
+  const getLiabilityColor = (liability) => {
+    switch (liability) {
+      case 'high': return 'text-red-600';
+      case 'medium': return 'text-yellow-600';
+      case 'low': return 'text-green-600';
+      default: return 'text-gray-600';
+    }
+  };
+
+  const getLiabilityIcon = (liability) => {
+    switch (liability) {
+      case 'high': return <XCircle className="w-6 h-6 text-red-600" />;
+      case 'medium': return <AlertTriangle className="w-6 h-6 text-yellow-600" />;
+      case 'low': return <CheckCircle className="w-6 h-6 text-green-600" />;
+      default: return <Scale className="w-6 h-6 text-gray-600" />;
+    }
+  };
+
+  const getLiabilityText = (liability) => {
+    switch (liability) {
+      case 'high': return 'High liability risk';
+      case 'medium': return 'Moderate liability risk';
+      case 'low': return 'Low liability risk';
+      default: return 'Liability uncertain';
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2 flex items-center">
-          <Map className="w-8 h-8 mr-3 text-blue-600" />
-          Australian Trust Law Jurisdiction Comparison
+          <Scale className="w-8 h-8 mr-3 text-blue-600" />
+          Interactive Trustee Duty Checker.
         </h1>
-        <p className="text-gray-600">Compare trustee powers, duties, and protections across Australian jurisdictions</p>
+        <p className="text-gray-600">Analyse trustee scenarios to identify applicable duties and potential breaches.</p>
       </div>
 
-      {/* Jurisdiction Selection */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-4">Select jurisdictions to compare (minimum 2):</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {Object.entries(jurisdictions).map(([key, jurisdiction]) => (
-            <button
-              key={key}
-              onClick={() => toggleJurisdiction(key)}
-              className={`p-3 rounded-lg border-2 text-center transition-all ${
-                selectedJurisdictions.includes(key)
-                  ? `border-${jurisdiction.color}-500 bg-${jurisdiction.color}-50`
-                  : 'border-gray-300 hover:border-gray-400'
-              }`}
+      {!analysis? (
+        <div className="space-y-6">
+          {/* Scenario Selection */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Select scenario:</label>
+            <select
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value)}
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <div className="font-medium text-sm">{jurisdiction.name}</div>
-              <div className={`text-xs mt-1 px-2 py-1 rounded ${
-                jurisdiction.status === 'Most progressive' ? 'bg-green-100 text-green-700' :
-                jurisdiction.status === 'Superseded' ? 'bg-red-100 text-red-700' :
-                jurisdiction.status === 'Traditional' ? 'bg-blue-100 text-blue-700' :
-                jurisdiction.status === 'Moderate reform' ? 'bg-purple-100 text-purple-700' :
-                'bg-gray-100 text-gray-700'
-              }`}>
-                {jurisdiction.status}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Category Selection */}
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-4">Comparison category:</h3>
-        <div className="flex flex-wrap gap-3">
-          {Object.entries(comparisonData).map(([key, category]) => (
-            <button
-              key={key}
-              onClick={() => setComparisonCategory(key)}
-              className={`flex items-center px-4 py-2 rounded-lg border ${
-                comparisonCategory === key
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-gray-300 hover:border-gray-400'
-              }`}
-            >
-              {category.icon}
-              <span className="ml-2 font-medium">{category.title}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Comparison Table */}
-      <div className="bg-white border rounded-lg overflow-hidden">
-        <div className="bg-gray-50 p-4 border-b">
-          <h3 className="text-xl font-semibold flex items-center">
-            {comparisonData[comparisonCategory].icon}
-            <span className="ml-2">{comparisonData[comparisonCategory].title} comparison</span>
-          </h3>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left p-4 font-semibold border-r">Aspect</th>
-                {selectedJurisdictions.map(jurisdictionKey => (
-                  <th key={jurisdictionKey} className="text-center p-4 font-semibold border-r min-w-40">
-                    <div>{jurisdictions[jurisdictionKey].name}</div>
-                    <div className="text-xs text-gray-600 font-normal">
-                      <em dangerouslySetInnerHTML={{ __html: jurisdictions[jurisdictionKey].fullName }}></em>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {comparisonData[comparisonCategory].categories.map((category, index) => (
-                <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="p-4 font-medium border-r bg-gray-50">
-                    {category.name}
-                  </td>
-                  {selectedJurisdictions.map(jurisdictionKey => {
-                    const data = category[jurisdictionKey];
-                    return (
-                      <td key={jurisdictionKey} className="p-4 border-r text-center">
-                        <div className={`inline-flex items-center px-3 py-1 rounded-full border text-sm ${getStatusColor(data.status)}`}>
-                          <span className="mr-2">{getStatusIcon(data.status)}</span>
-                          {data.text}
-                        </div>
-                        <button
-                          onClick={() => setShowDetails(showDetails === `${index}-${jurisdictionKey}` ? null : `${index}-${jurisdictionKey}`)}
-                          className="block mt-2 text-xs text-blue-600 hover:text-blue-800 mx-auto"
-                        >
-                          {showDetails === `${index}-${jurisdictionKey}` ? 'Hide details' : 'Show details'}
-                        </button>
-                        {showDetails === `${index}-${jurisdictionKey}` && (
-                          <div className="mt-2 p-3 bg-blue-50 rounded border text-xs text-left">
-                            {data.detail}
-                          </div>
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
+              <option value="">Choose a scenario...</option>
+              {scenarios.map(s => (
+                <option key={s.id} value={s.id}>{s.title}</option>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Key Insights */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-green-800 mb-3 flex items-center">
-            <AlertTriangle className="w-5 h-5 mr-2" />
-            Queensland 2025 advantages
-          </h3>
-          <ul className="text-sm text-green-700 space-y-2">
-            <li>• First non-excludable statutory duties in Australia</li>
-            <li>• "All powers of absolute owner" revolutionary approach</li>
-            <li>• Tiered professional standards for different trustee types</li>
-            <li>• Enhanced delegation powers for modern portfolio management</li>
-            <li>• Statutory beneficiary information rights</li>
-            <li>• Comprehensive court relief provisions</li>
-          </ul>
-        </div>
-
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center">
-            <BookOpen className="w-5 h-5 mr-2" />
-            Practical implications
-          </h3>
-          <ul className="text-sm text-blue-700 space-y-2">
-            <li>• Queensland trusts gain competitive advantage in flexibility</li>
-            <li>• Higher compliance burden but better beneficiary protection</li>
-            <li>• Professional trustees face enhanced liability standards</li>
-            <li>• Other jurisdictions may need to consider reforms</li>
-            <li>• Trust shopping may favour Queensland for new structures</li>
-            <li>• Existing trusts may consider restructuring</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-semibold mb-3">Status legend:</h4>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div className="flex items-center">
-            <span className="mr-2">🌟</span>
-            <span className={`px-2 py-1 rounded ${getStatusColor('excellent')}`}>Excellent</span>
-            <span className="ml-2 text-gray-600">Leading practice</span>
+            </select>
+            {scenario && (
+              <div className="mt-2 p-3 bg-gray-50 rounded border-l-4 border-blue-500">
+                <p className="text-sm">{scenarios.find(s => s.id === scenario)?.description}</p>
+              </div>
+            )}
           </div>
-          <div className="flex items-center">
-            <span className="mr-2">✅</span>
-            <span className={`px-2 py-1 rounded ${getStatusColor('good')}`}>Good</span>
-            <span className="ml-2 text-gray-600">Solid provisions</span>
+
+          {/* Trustee Type */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Trustee type:</label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {['individual', 'professional', 'corporate'].map(type => (
+                <button
+                  key={type}
+                  onClick={() => setTrusteeType(type)}
+                  className={`p-4 border rounded-lg text-left ${
+                    trusteeType === type? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                  }`}
+                >
+                  <div className="font-medium capitalize">{type} trustee</div>
+                  <div className="text-sm text-gray-600 mt-1">
+                    {type === 'individual' && 'Natural person, ordinary care standard.'}
+                    {type === 'professional' && 'Licensed/professional entity, enhanced standards.'}
+                    {type === 'corporate' && 'Company trustee, professional standards.'}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex items-center">
-            <span className="mr-2">⚠️</span>
-            <span className={`px-2 py-1 rounded ${getStatusColor('fair')}`}>Fair</span>
-            <span className="ml-2 text-gray-600">Basic coverage</span>
+
+          {/* Jurisdiction */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Applicable law:</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={() => setJurisdiction('qld2025')}
+                className={`p-4 border rounded-lg text-left ${
+                  jurisdiction === 'qld2025'? 'border-green-500 bg-green-50' : 'border-gray-300'
+                }`}
+              >
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Modernised legislation with non-excludable duties and enhanced powers.
+                </div>
+              </button>
+              <button
+                onClick={() => setJurisdiction('qld1973')}
+                className={`p-4 border rounded-lg text-left ${
+                  jurisdiction === 'qld1973'? 'border-orange-500 bg-orange-50' : 'border-gray-300'
+                }`}
+              >
+                <div className="font-medium">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Previous legislation with limited statutory duties (pre-modernisation).
+                </div>
+              </button>
+            </div>
           </div>
-          <div className="flex items-center">
-            <span className="mr-2">❌</span>
-            <span className={`px-2 py-1 rounded ${getStatusColor('poor')}`}>Poor</span>
-            <span className="ml-2 text-gray-600">Limited/outdated</span>
+
+          {/* Trust Type */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Trust type:</label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {['discretionary', 'fixed', 'unit'].map(type => (
+                <button
+                  key={type}
+                  onClick={() => setTrustType(type)}
+                  className={`p-3 border rounded-lg text-center ${
+                    trustType === type? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+                  }`}
+                >
+                  <div className="font-medium capitalize">{type} trust</div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={analyzeScenario}
+              disabled={!scenario ||!trusteeType ||!jurisdiction ||!trustType}
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            >
+              Analyse duties and breaches.
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Analysis Header */}
+          <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
+            <h2 className="text-xl font-bold mb-2">Analysis: {analysis.scenario.title}.</h2>
+            <p className="text-gray-700 mb-4">{analysis.scenario.description}</p>
+            <div className="flex items-center space-x-4 text-sm">
+              <span className="bg-blue-100 px-3 py-1 rounded-full">
+                {trusteeType.charAt(0).toUpperCase() + trusteeType.slice(1)} trustee
+              </span>
+              <span className="bg-green-100 px-3 py-1 rounded-full">
+                {jurisdiction === 'qld2025'? <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld)</> : <>Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld)</>}
+              </span>
+              <span className="bg-purple-100 px-3 py-1 rounded-full">
+                {trustType.charAt(0).toUpperCase() + trustType.slice(1)} trust
+              </span>
+            </div>
+          </div>
+
+          {/* Severity Indicator */}
+          <div className={`p-4 rounded-lg flex items-center ${
+            analysis.severity === 'high'? 'bg-red-100 border border-red-300' :
+            analysis.severity === 'medium'? 'bg-yellow-100 border border-yellow-300' :
+            'bg-green-100 border border-green-300'
+          }`}>
+            {analysis.severity === 'high'?
+              <XCircle className="w-6 h-6 text-red-600 mr-3" /> :
+              analysis.severity === 'medium'?
+              <AlertTriangle className="w-6 h-6 text-yellow-600 mr-3" /> :
+              <CheckCircle className="w-6 h-6 text-green-600" />
+            }
+            <div>
+              <div className="font-semibold">
+                {analysis.severity === 'high'? 'High risk breach.' :
+                  analysis.severity === 'medium'? 'Moderate breach risk.' :
+                  'Low risk / technical issues.'}
+              </div>
+              <div className="text-sm">
+                {analysis.severity === 'high'? 'Serious breaches with potential personal liability.' :
+                  analysis.severity === 'medium'? 'Potential breaches requiring immediate attention.' :
+                  'Minor issues that should be addressed.'}
+              </div>
+            </div>
+          </div>
+
+          {/* Applicable Duties */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+              Applicable trustee duties.
+            </h3>
+            <div className="space-y-2">
+              {analysis.applicableDuties.map((duty, index) => (
+                <div key={index} className="flex items-start p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                  <Info className="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{duty}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Potential Breaches */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <AlertTriangle className="w-5 h-5 mr-2 text-red-600" />
+              Potential breaches identified.
+            </h3>
+            <div className="space-y-2">
+              {analysis.breaches.map((breach, index) => (
+                <div key={index} className="flex items-start p-3 bg-red-50 rounded border-l-4 border-red-400">
+                  <XCircle className="w-4 h-4 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{breach}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Available Protections */}
+          {analysis.protections.length > 0 && (
+            <div className="bg-white border rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
+                Available protections and defences.
+              </h3>
+              <div className="space-y-2">
+                {analysis.protections.map((protection, index) => (
+                  <div key={index} className="flex items-start p-3 bg-green-50 rounded border-l-4 border-green-400">
+                    <CheckCircle className="w-4 h-4 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{protection}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          <div className="bg-white border rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-4">Recommended actions.</h3>
+            <div className="space-y-2">
+              {analysis.recommendations.map((rec, index) => (
+                <div key={index} className="flex items-start p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                  <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5 flex-shrink-0">
+                    {index + 1}
+                  </div>
+                  <span className="text-sm">{rec}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={reset}
+              className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+            >
+              Analyse another scenario.
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Reference Material */}
+      <div className="mt-8 bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg font-semibold mb-4">Key Queensland 2025 versus 1973 differences.</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-medium text-green-700 mb-2">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 2025' }}></em> (Qld).</h4>
+            <ul className="text-sm space-y-1">
+              <li>• Non-excludable core duties (Sections 64–70).</li>
+              <li>• Tiered professional standards.</li>
+              <li>• Enhanced delegation powers.</li>
+              <li>• Statutory information disclosure rights.</li>
+              <li>• Mandatory three-year record keeping.</li>
+              <li>• 'All powers of absolute owner' framework.</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-orange-700 mb-2">Queensland <em dangerouslySetInnerHTML={{ __html: 'Trusts Act 1973' }}></em> (Qld).</h4>
+            <ul className="text-sm space-y-1">
+              <li>• General law duties predominantly.</li>
+              <li>• Limited statutory powers.</li>
+              <li>• Basic record keeping requirements.</li>
+              <li>• Restrictive enumerated powers approach.</li>
+              <li>• Excludable statutory provisions.</li>
+              <li>• Limited beneficiary information rights.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-4 p-4 bg-red-100 border border-red-200 rounded">
+          <div className="flex items-start">
+            <Info className="w-5 h-5 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-800">
+              <strong>Disclaimer:</strong> This tool provides general educational guidance only. Actual breach consequences depend on specific facts, applicable law, and judicial discretion. Always seek immediate professional legal advice for potential breach situations.
+            </div>
           </div>
         </div>
       </div>
@@ -417,4 +450,4 @@ const JurisdictionComparisonTool = () => {
   );
 };
 
-export default JurisdictionComparisonTool;
+export default InteractiveDutyChecker;
