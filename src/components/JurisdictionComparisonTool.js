@@ -1,3 +1,4 @@
+// src/Components/JurisdictionComparisonTool.js
 import { useState } from 'react';
 import { Map, BookOpen, Scale, Users, DollarSign, Clock, Shield, AlertTriangle } from 'lucide-react';
 
@@ -312,7 +313,7 @@ const JurisdictionComparisonTool = () => {
                   <th key={jurisdictionKey} className="text-center p-4 font-semibold border-r min-w-40">
                     <div>{jurisdictions[jurisdictionKey].name}</div>
                     <div className="text-xs text-gray-600 font-normal">
-                      <em>{jurisdictions[jurisdictionKey].fullName}</em>
+                      <em dangerouslySetInnerHTML={{ __html: jurisdictions[jurisdictionKey].fullName }}></em>
                     </div>
                   </th>
                 ))}
