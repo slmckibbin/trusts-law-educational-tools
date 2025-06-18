@@ -1,5 +1,3 @@
-# Create a new package.json with correct dependencies
-cat > package.json << 'EOF'
 {
   "name": "trusts-law-educational-tools",
   "version": "1.0.0",
