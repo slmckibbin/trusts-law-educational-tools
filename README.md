@@ -18,7 +18,7 @@ This repository contains six interactive educational tools designed for law stud
 
 ### 1. Interactive Duty Checker
 - **Purpose:** Analyse trustee scenarios to identify applicable duties and potential breaches
-- **Features:** Scenario-based analysis, Queensland 2025 vs 1973 comparisons, severity assessment
+- **Features:** Scenario-based analysis, *Trusts Act 2025* (Qld) vs *Trusts Act 1973* (Qld) comparisons, severity assessment
 - **Learning Outcomes:** Understanding trustee duties under modern and traditional frameworks
 
 ### 2. Jurisdiction Comparison Tool
@@ -50,12 +50,12 @@ This repository contains six interactive educational tools designed for law stud
 
 These tools extensively cover the revolutionary changes in Queensland's *Trusts Act 2025*:
 
-- **Non-excludable Core Duties** (Sections 64-70)
-- **"All Powers of Absolute Owner" Framework**
-- **Enhanced Delegation Powers** (Sections 72-73)
-- **Tiered Professional Standards** (Sections 65-67)
-- **Statutory Information Disclosure Rights** (Section 70)
-- **Enhanced Trustee Protections** (Sections 153-160)
+- **Non-excludable Core Duties** (ss 64-70)
+- **'All Powers of Absolute Owner' Framework**
+- **Enhanced Delegation Powers** (ss 72-73)
+- **Tiered Professional Standards** (ss 65-67)
+- **Statutory Information Disclosure Rights** (s 70)
+- **Enhanced Trustee Protections** (ss 153-160)
 
 ## 🛠️ Technical Requirements
 
