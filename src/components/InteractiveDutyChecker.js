@@ -11,7 +11,7 @@ const InteractiveDutyChecker = () => {
 
   const duties = {
     core_non_excludable: [
-      { name: 'Act honestly and in good faith', qld2025: 'Section 64', qld1973: 'General law only', description: 'Fundamental fiduciary duty - now statutory in Queensland 2025' },
+      { name: 'Act honestly and in good faith', qld2025: 'Section 64', qld1973: 'General law only', description: 'Fundamental fiduciary duty - now statutory in Queensland (<i>Trusts Act 2025</i>)' },
       { name: 'Exercise appropriate duty of care', qld2025: 'Sections 65-67 (tiered)', qld1973: 'General law only', description: 'Professional vs non-professional standards' },
       { name: 'Keep accurate records', qld2025: 'Section 69 (3 years minimum)', qld1973: 'Section 77 (basic)', description: 'Enhanced record-keeping requirements' },
       { name: 'Provide information to beneficiaries', qld2025: 'Section 70', qld1973: 'General law only', description: 'Statutory disclosure obligations' }
@@ -19,7 +19,7 @@ const InteractiveDutyChecker = () => {
     traditional_duties: [
       { name: 'Follow trust terms', source: 'General law + statute', description: 'Carry out settlor\'s wishes as expressed in trust deed' },
       { name: 'Act impartially among beneficiaries', source: 'General law', description: 'Fair treatment (meaningless for discretionary trusts)' },
-      { name: 'Not delegate inappropriately', source: 'General law + Queensland 2025 ss 72-73', description: 'Enhanced delegation powers in Queensland 2025' },
+      { name: 'Not delegate inappropriately', source: 'General law + <i>Trusts Act 2025</i> (Qld) ss 72-3', description: 'Enhanced delegation powers in Queensland 2025' },
       { name: 'Invest prudently', source: 'General law + statute', description: 'Prudent person standard with modern flexibility' },
       { name: 'Not profit from position', source: 'General law', description: 'Avoid conflicts of interest and personal benefit' },
       { name: 'Get in trust property', source: 'General law', description: 'Obtain legal title to trust assets' }
@@ -29,31 +29,31 @@ const InteractiveDutyChecker = () => {
   const scenarios = [
     {
       id: 'investment_loss',
-      title: 'Major Investment Loss',
+      title: 'Major investment loss',
       description: 'Trustee invested 80% of trust fund in cryptocurrency without consulting beneficiaries, resulting in 60% loss',
       triggers: ['investment', 'prudence', 'care']
     },
     {
       id: 'self_dealing',
-      title: 'Self-Dealing Transaction',
+      title: 'Self-dealing transaction',
       description: 'Corporate trustee purchased trust property for its parent company at below market value',
       triggers: ['conflict', 'honesty', 'profit']
     },
     {
       id: 'information_refusal',
-      title: 'Refusing Information Request',
+      title: 'Refusing information request',
       description: 'Trustee refused to provide trust accounts to discretionary beneficiary citing confidentiality',
       triggers: ['information', 'records']
     },
     {
       id: 'excessive_fees',
-      title: 'Excessive Professional Fees',
+      title: 'Excessive professional fees',
       description: 'Professional trustee charged $50,000 annual fee for simple family trust with $200,000 assets',
       triggers: ['profit', 'care', 'honesty']
     },
     {
       id: 'delegation_failure',
-      title: 'Improper Delegation',
+      title: 'Improper delegation',
       description: 'Trustee delegated all investment decisions to unqualified family member indefinitely without oversight',
       triggers: ['delegation', 'care', 'prudence']
     }
@@ -72,7 +72,7 @@ const InteractiveDutyChecker = () => {
     if (selectedScenario.triggers.includes('investment') || selectedScenario.triggers.includes('prudence')) {
       applicableDuties.push('Duty to invest prudently');
       if (jurisdiction === 'qld2025') {
-        applicableDuties.push('Enhanced duty of care (Sections 65-67)');
+        applicableDuties.push('Enhanced duty of care (ss 65-67)');
         if (trusteeType === 'professional') {
           breaches.push('Professional trustee standard - must exercise care equivalent to prudent person in trustee profession');
         }
@@ -93,8 +93,8 @@ const InteractiveDutyChecker = () => {
 
     if (selectedScenario.triggers.includes('information') || selectedScenario.triggers.includes('records')) {
       if (jurisdiction === 'qld2025') {
-        applicableDuties.push('Statutory duty to provide information (Section 70)');
-        applicableDuties.push('Duty to keep accurate records (Section 69)');
+        applicableDuties.push('Statutory duty to provide information (s 70)');
+        applicableDuties.push('Duty to keep accurate records (s 69)');
         breaches.push('Breach of non-excludable information disclosure duty');
         protections.push('Limited protection - courts may excuse minor breaches if trustee acted reasonably');
       } else {
@@ -106,7 +106,7 @@ const InteractiveDutyChecker = () => {
     if (selectedScenario.triggers.includes('delegation')) {
       applicableDuties.push('Duty not to delegate inappropriately');
       if (jurisdiction === 'qld2025') {
-        protections.push('Enhanced delegation powers (Sections 72-73) but must supervise delegates');
+        protections.push('Enhanced delegation powers (ss 72-3) but must supervise delegates');
         breaches.push('Improper delegation without adequate oversight or qualification assessment');
       } else {
         breaches.push('General law prohibition on delegating discretionary powers');
@@ -117,12 +117,12 @@ const InteractiveDutyChecker = () => {
     if (trusteeType === 'professional') {
       applicableDuties.push('Enhanced professional standard of care');
       if (jurisdiction === 'qld2025') {
-        breaches.push('Failed to meet professional trustee standard under Section 65');
+        breaches.push('Failed to meet professional trustee standard under s 65');
       }
     } else if (trusteeType === 'individual') {
       applicableDuties.push('Ordinary prudent person standard');
       if (jurisdiction === 'qld2025') {
-        applicableDuties.push('Basic duty of care (Section 67)');
+        applicableDuties.push('Basic duty of care (s 67)');
       }
     }
 
@@ -133,7 +133,7 @@ const InteractiveDutyChecker = () => {
 
     if (jurisdiction === 'qld2025') {
       recommendations.push('Review compliance with non-excludable statutory duties');
-      protections.push('Court discretion to relieve liability (Section 160)');
+      protections.push('Court discretion to relieve liability (s 160)');
     }
 
     setAnalysis({
