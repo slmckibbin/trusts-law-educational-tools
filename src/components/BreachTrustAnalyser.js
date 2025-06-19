@@ -1,5 +1,5 @@
 // src/components/BreachTrustAnalyser.js
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AlertTriangle, Shield, Scale, Target, CheckCircle, XCircle, Info, Gavel } from 'lucide-react';
 
 const BreachTrustAnalyser = () => {
