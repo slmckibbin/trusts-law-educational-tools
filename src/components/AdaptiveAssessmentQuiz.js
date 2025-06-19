@@ -1,5 +1,5 @@
 // src/components/AdaptiveAssessmentQuiz.js
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Brain, CheckCircle, XCircle, ArrowRight, ArrowLeft, Trophy, Target, BookOpen, AlertTriangle } from 'lucide-react';
 
 const AdaptiveAssessmentQuiz = () => {
