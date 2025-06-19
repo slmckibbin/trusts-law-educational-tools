@@ -25,7 +25,7 @@ Each component is self-contained and requires no props:
 ### InteractiveDutyChecker
 Features:
 - Scenario selection and analysis
-- <i>Trusts Act 2025<\i> (Qld) vs <i>Trusts Act 1973<\i> (Qld) comparison
+- *Trusts Act 2025* (Qld) vs *Trusts Act 1973* (Qld) comparison
 - Duty identification and breach assessment
 - Severity indicators and recommendations
 
